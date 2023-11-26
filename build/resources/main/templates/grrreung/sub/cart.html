@@ -1,78 +1,145 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:replace="~{/fragments/fragment_config :: configFragment}" />
+    <th:block th:replace="~{/fragments/fragment_config :: configFragment}"/>
     <link rel="stylesheet" href="/css/cart.css">
-
-    <script src="/js/cart.js" defer></script>
     <title>Grr-reung 그르릉 장바구니</title>
+    <script src="/js/cart.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
 <!-- 헤더 -->
-<th:block th:replace="~{/fragments/fragment_header :: headerFragment}" />
+<th:block th:replace="~{/fragments/fragment_header :: headerFragment}"/>
 
-    <!-- 서브페이지 내용 붙여넣기할 부분 -->
-    <section class="bg-white py-8">
-        <div class="container mx-auto items-centerpt-4 pb-12">
-            <div class="cart_table">
-                        <p>장바구니</p>
-                        <ul class="cart_list">
-                            <li>
-                                <div class="checkbox">
-                                    <input type="checkbox" name="all_chk" id="all_chk">
-                                    <label for="all_chk">전체선택</label>
-                                </div>
-                                <div class="del_btn">삭제 (<span class="num">0</span>)</div>
-                            </li>
-                            <!-- 장바구니 상품목록 for문 -->
-                            <li th:each="map : ${list}">
-                                <div class="checkbox">
-                                    <input type="checkbox" name="item_chk" id="item_chk01">
-                                    <label for="item_chk01"></label>
-                                </div>
-                                <div class="item_detail">
-                                    <img src="https://tictoc-web.s3.ap-northeast-2.amazonaws.com/img/shop/detail_thumb_s_01.jpg">
-                                    <p class="name" th:text="${map.ITEM_NAME}"></p>
-                                    <p class="txt" th:text="${map.ITEM_DETAIL}"></p>
-                                </div>
-                                <div class="opt_info">
-                                    <div class="price_btn">
-                                        <input type="button" value="-" class="minus_btn">
-                                        <input type="text" th:value="${map.CART_AMOUNT}" class="number">
-                                        <input type="button" value="+" class="plus_btn">
-                                    </div>
-                                    <div class="total_p">
-                                        <strong class="price_amount" th:text="${map.ITEM_PRICE}"></strong>원
-                                        <span class="del_li_btn"><img src="https://tictoc-web.s3.ap-northeast-2.amazonaws.com/web/img/icon/btn_del_circle.svg"></span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+<!-- 서브페이지 내용 붙여넣기할 부분 -->
+<section class="bg-white py-8">
+    <div class="container mx-auto items-centerpt-4 pb-12">
+        <div class="cart_table">
+            <p>장바구니</p>
+            <ul class="cart_list">
+                <li>
+                    <div class="checkbox">
+                        <input type="checkbox" name="all_chk" id="all_chk">
+                        <label for="all_chk">전체선택</label>
+                    </div>
+                    <div class="del_btn">삭제 (<span class="num">0</span>)</div>
+                </li>
+                <!-- 장바구니 상품목록 for문 -->
+                <li th:each="map, itemStat : ${list}" th:id="'item_' + ${itemStat.index}">
+                    <div class="checkbox">
+                        <input type="checkbox" name="item_chk" th:id="'item_chk' + ${itemStat.index}" class="item_chk">
+                        <label th:for="'item_chk' + ${itemStat.index}"></label>
+                    </div>
+                    <div class="item_detail">
+                        <img src="https://tictoc-web.s3.ap-northeast-2.amazonaws.com/img/shop/detail_thumb_s_01.jpg"
+                             alt="Product Image">
+                        <p class="name" th:text="${map.ITEM_NAME}"></p>
+                        <p class="txt" th:text="${map.ITEM_DETAIL}"></p>
+                    </div>
+                    <div class="opt_info">
+                        <div class="total_p">
+                            <strong class="price_amount" th:text="${#numbers.formatDecimal(map.ITEM_PRICE * map.CART_AMOUNT, 0, 'DEFAULT', 0, 'DEFAULT')}"></strong>원
+                            <span class="del_li_btn"><img src="https://tictoc-web.s3.ap-northeast-2.amazonaws.com/web/img/icon/btn_del_circle.svg"></span>
+                        </div>
+                        <div class="price_btn">
+                            <input type="button" value="-" class="minus_btn">
+                            <input type="text" th:value="${map.CART_AMOUNT}" class="number">
+                            <input type="button" value="+" class="plus_btn">
+                        </div>
+                    </div>
+                    <script>
+                        // html 로딩 후 시작하는 함수
+                        $(document).ready(function () {
 
-                        <!-- 장바구니 총 결제 금액 -->
-                        <div class="cart_total_area">
-                            <div th:each="map : ${list}">
-                            <p>결제 정보</p>
-                            <div class="cart_total_price">
-                                <p>총 상품금액 <strong class="item_price" th:text="${#numbers.formatDecimal(map.CART_AMOUNT * map.ITEM_PRICE, 0, 'DEFAULT', 0, 'DEFAULT')}"></strong>원 <span class="plus_ic"></span></p>
-                                <!-- <p>할인금액 <strong class="sale_price color-symbol">-10,000</strong>원 <span class="plus_ic"></span></p>-->
-                                <p>총 배송비 <strong class="delivery_price">2,500</strong>원 <span class="equal_ic"></span></p>
-                                <p>총 결제금액 <strong class="total_price color-red" th:text="${#numbers.formatDecimal((map.CART_AMOUNT * map.ITEM_PRICE + 2500), 0, 'DEFAULT', 0, 'DEFAULT')}"></strong>원</p>
-                            </div>
-                            </div>
-                        </div>
-            
-                        <div class="btn_box">
-                            <button type="button" onclick="location.href='/grrreung/shop'" class="btn wh-btn">계속 쇼핑하기</button>
-                            <button type="button" class="btn black-btn">구매하기</button>
-                        </div>
+                            // +/- 버튼 이벤트리스너
+                            $(".minus_btn, .plus_btn").on("click", function () {
+                                var listItem = $(this).closest('li');
+                                updateCartItemTotal(listItem);
+                                updateCartTotal();
+                            });
+
+                            // 수량 변경 사항 수신
+                            $(".number").on("input", function () {
+                                var listItem = $(this).closest('li');
+                                updateCartItemTotal(listItem);
+                                updateCartTotal();
+                            });
+
+                            // 해당 상품의 총 가격 업데이트
+                            function updateCartItemTotal(item) {
+                                var quantityInput = item.find('.number');
+                                var priceAmount = item.find('.price_amount');
+                                var itemPrice = parseFloat(item.find('.price_amount').text().replace('원', '').replace(',', ''));
+                                var quantity = parseInt(quantityInput.val());
+
+                                // Ensure quantity is a positive integer
+                                if (isNaN(quantity) || quantity <= 0) {
+                                    quantity = 1;
+                                    quantityInput.val(quantity);
+                                }
+
+                                var totalPrice = itemPrice * quantity;
+
+                                // 총가격 보여주기
+                                priceAmount.text(totalPrice.toLocaleString() + '원');
+                            }
+
+                            // 총 결제 정보 업데이트 기능
+                            function updateCartTotal() {
+                                var totalItemPrice = 0;
+
+                                // 총 상품 가격 계산
+                                $(".cart_list li").each(function () {
+                                    var priceAmount = $(this).find('.price_amount');
+                                    var itemPrice = parseFloat(priceAmount.text().replace('원', '').replace(',', ''));
+                                    var quantity = parseInt($(this).find('.number').val());
+
+                                    if (!isNaN(itemPrice) && !isNaN(quantity)) {
+                                        totalItemPrice += itemPrice * quantity;
+                                    }
+                                });
+
+                                // 총 상품 가격 업데이트
+                                $(".item_price").text(totalItemPrice.toLocaleString() + '원');
+
+                                // 총 금액 계산 후 업데이트
+                                var totalPayment = totalItemPrice + 2500; // Assuming a fixed delivery fee of 2500
+                                $(".total_price").text(totalPayment.toLocaleString() + '원');
+                            }
+                        });
+                    </script>
+                </li>
+            </ul>
+
+
+            <!-- 장바구니 총 결제 금액 -->
+            <div class="cart_total_area">
+                <div th:each="map : ${list}">
+                    <p>결제 정보</p>
+                    <div class="cart_total_price">
+                        <p>총 상품금액 <strong class="item_price"
+                                          th:text="${#numbers.formatDecimal(map.CART_AMOUNT * map.ITEM_PRICE, 0, 'DEFAULT', 0, 'DEFAULT')}"></strong>원
+                            <span class="plus_ic"></span></p>
+                        <!-- <p>할인금액 <strong class="sale_price color-symbol">-10,000</strong>원 <span class="plus_ic"></span></p>-->
+                        <p>총 배송비 <strong class="delivery_price">2,500</strong>원 <span class="equal_ic"></span></p>
+                        <p>총 결제금액 <strong class="total_price color-red"
+                                          th:text="${#numbers.formatDecimal((map.CART_AMOUNT * map.ITEM_PRICE + 2500), 0, 'DEFAULT', 0, 'DEFAULT')}"></strong>원
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn_box">
+                <button type="button" onclick="location.href='/grrreung/shop'" class="btn wh-btn">계속 쇼핑하기</button>
+                <button type="button" class="btn black-btn">구매하기</button>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 
 <!-- 푸터 -->
-<th:block th:replace="~{/fragments/fragment_footer :: footerFragment}" />
+<th:block th:replace="~{/fragments/fragment_footer :: footerFragment}"/>
 
 </body>
 </html>

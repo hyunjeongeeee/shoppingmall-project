@@ -51,7 +51,7 @@ public class MemberController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/grrreung/";
     }
 
 
@@ -68,7 +68,6 @@ public class MemberController {
      */
     @PostMapping("/register")
     public String register(@ModelAttribute("member") Member member) {
-        log.info("수신한 회원 정보 : {}", member.toString());
         memberService.register(member);  // 디비연결
         return "redirect:/grrreung/result";
     }

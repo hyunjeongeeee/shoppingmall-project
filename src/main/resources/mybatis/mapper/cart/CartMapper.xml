@@ -4,16 +4,40 @@
 <mapper namespace="com.ezen.grrreung.domain.cart.mapper.CartMapper">
 
     <!-- 장바구니 상품 리스트 -->
+<!--    <select id="findById" parameterType="String" resultType="map">-->
+<!--        SELECT i.item_name, i.item_detail, i.item_price, i.item_amount, c.cart_id, c.member_id, c.item_id, SUM(c.cart_amount) cart_amount, (m.img_url || m.img_name) item_img-->
+<!--        FROM cart c-->
+<!--                inner join item i-->
+<!--                    on c.item_id = i.item_id-->
+<!--                inner join item_img m-->
+<!--                    on i.item_id = m.item_id-->
+<!--        WHERE c.member_id = #{value}-->
+<!--        GROUP BY i.item_name, i.item_detail, i.item_price, i.item_amount, c.cart_id, c.member_id, c.item_id, (m.img_url || m.img_name)-->
+<!--        order by item_id desc-->
+<!--    </select>-->
+
+
+
+
     <select id="findById" parameterType="String" resultType="map">
-        SELECT i.item_name, i.item_detail, i.item_price, i.item_amount, c.cart_id, c.member_id, c.item_id, SUM(c.cart_amount) cart_amount, (m.img_url || m.img_name) item_img
-        FROM cart c
-                inner join item i
-                    on c.item_id = i.item_id
-                inner join item_img m
-                    on i.item_id = m.item_id
+        SELECT i.item_name, i.item_detail, i.item_price, c.cart_id, c.member_id, c.item_id, SUM(c.cart_amount) AS cart_amount, m.img_name AS item_img
+        FROM
+            cart c
+                INNER JOIN item i
+                    ON c.item_id = i.item_id
+                    INNER JOIN item_img m
+                        ON i.item_id = m.item_id
         WHERE c.member_id = #{value}
-        GROUP BY i.item_name, i.item_detail, i.item_price, i.item_amount, c.cart_id, c.member_id, c.item_id, (m.img_url || m.img_name)
-        order by item_id desc
+          AND m.rep_img_yn='Y'
+        GROUP BY
+            i.item_name, i.item_detail, i.item_price, c.cart_id, c.member_id, c.item_id, m.img_name
+        ORDER BY
+            item_id DESC
     </select>
+
+    <delete id="deleteCart" parameterType="String">
+        DELETE FROM cart
+        WHERE member_id = #{memberId} AND item_id = #{item_id};
+    </delete>
 </mapper>
 
