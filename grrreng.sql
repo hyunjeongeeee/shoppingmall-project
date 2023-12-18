@@ -10,18 +10,6 @@ DROP TABLE item_img;
 
 DROP TABLE category;
 
-DROP TABLE order_item;
-
-DROP TABLE order_gr;
-
-DROP TABLE notice;
-
-DROP TABLE item_qna;
-
-DROP TABLE item_rev;
-
-DROP TABLE item_qna_re;
-
 
 
 
@@ -1450,42 +1438,8 @@ WHERE
     AND NOT m.img_name LIKE '%description%';
              
 
-    
+------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
--- CREATE ---------------------------------
-
-CREATE TABLE order_gr (
-    order_id        NUMBER(20) NOT NULL,
-    member_id       VARCHAR2(30) NOT NULL,
-    order_date      DATE DEFAULT sysdate,
-    order_status    VARCHAR2(255) DEFAULT '주문완료',
-    order_memo      VARCHAR2(100) NULL,
-    order_name      VARCHAR2(30) NOT NULL,
-    order_add       VARCHAR2(255) NOT NULL,
-    order_hp        VARCHAR2(30) NOT NULL,
-    order_price_all VARCHAR2(50) NOT NULL
-);
-
-CREATE TABLE order_item (
-    order_item_id NUMBER(20) NOT NULL,
-    order_id      NUMBER(20) NOT NULL,
-    item_id       NUMBER(20) NOT NULL,
-    order_price   NUMBER(20) NOT NULL,
-    order_amount  NUMBER(20) NOT NULL
-);
 
 CREATE TABLE member (
     member_id VARCHAR2(30) NOT NULL,
@@ -1542,24 +1496,9 @@ CREATE TABLE item_qna_re (
 
 ALTER TABLE order_gr ADD CONSTRAINT pk_order_gr PRIMARY KEY ( order_id );
 
-ALTER TABLE member ADD CONSTRAINT pk_member PRIMARY KEY ( member_id );
-
 ALTER TABLE order_item ADD CONSTRAINT pk_order_item PRIMARY KEY ( order_item_id,
                                                                   order_id );
 
-ALTER TABLE cart ADD CONSTRAINT pk_cart PRIMARY KEY ( cart_id );
-
-ALTER TABLE notice ADD CONSTRAINT pk_notice PRIMARY KEY ( noti_code );
-
-ALTER TABLE item_qna ADD CONSTRAINT pk_item_qna PRIMARY KEY ( qna_code );
-
-ALTER TABLE item_rev ADD CONSTRAINT pk_item_rev PRIMARY KEY ( rev_code );
-
-ALTER TABLE item_qna_re ADD CONSTRAINT pk_item_qna_re PRIMARY KEY ( re_code );
-
-ALTER TABLE order_item
-    ADD CONSTRAINT fk_order_gr_to_order_item_1 FOREIGN KEY ( order_id )
-        REFERENCES order_gr ( order_id );
 
 
 -- SEQUENCE DROP ---------------------------------
@@ -1570,8 +1509,6 @@ DROP SEQUENCE notice_seq;
 -- Drop sequence for item_rev�� ������ ����
 DROP SEQUENCE item_rev_seq;
 
--- Drop sequence for order_gr
-DROP SEQUENCE order_gr_seq;
 
 -- Drop sequence for item_qna
 DROP SEQUENCE item_qna_seq;
@@ -1856,119 +1793,6 @@ ORDER BY
     rev_code DESC;
 
 -------------------------------------------------------------------------------
-
-SELECT
-    *
-FROM
-    item_qna
-WHERE
-    qna_title LIKE '%1%'
-    OR member_id LIKE '%1%';
-
-SELECT
-    noti_code,
-    noti_title,
-    noti_cont,
-    noti_auth,
-    to_char(noti_date, 'yyyy-MM-DD HH24:MI:SS') noti_date
-FROM
-    notice
-WHERE
-    noti_code = 1;
-
-
--- 페이징처리 select 문
-SELECT
-    noti_code,
-    noti_title,
-    noti_cont,
-    noti_auth,
-    noti_date
-FROM
-    (
-        SELECT
-            ceil(ROWNUM / 5) page,
-            noti_code,
-            noti_title,
-            noti_cont,
-            noti_auth,
-            noti_date
-        FROM
-            (
-                SELECT
-                    noti_code,
-                    noti_title,
-                    noti_cont,
-                    noti_auth,
-                    to_char(noti_date, 'yyyy-MM-DD HH24:MI:SS') noti_date
-                FROM
-                    notice
-                WHERE
-                    noti_title LIKE '%l%'
-                    OR noti_auth LIKE '%g%'
-                ORDER BY
-                    noti_date DESC
-            )
-    )
-WHERE
-    page = 1;
-    
-    
-    
--- 아이템 리뷰 서치
-SELECT
-		rev_code,
-		rev_title,
-		rev_cont,
-		member_id,
-		rev_date
-		FROM
-		(
-		SELECT
-		ceil(ROWNUM / 5)  page,
-		rev_code,
-		rev_title,
-		rev_cont,
-		member_id,
-		rev_date
-		FROM
-		(
-		SELECT
-		rev_code,
-		rev_title,
-		rev_cont,
-		member_id,
-		to_char(rev_date, 'yyyy-MM-DD HH24:MI:SS') rev_date
-		FROM
-		item_rev
-		where
-				rev_title LIKE '%cust%'
-				OR rev_code LIKE '%cust%'
-				OR member_id = 'cust'
-			
-		ORDER BY
-		rev_code DESC
-		)
-		)
-		WHERE
-		page = 1;
-
-select *
-from item_rev
-where member_id = 'customer1';
-    
-    
--- 페이징 처리 카운트
-
-SELECT
-    COUNT(*) cnt
-FROM
-    notice
-WHERE
-    noti_title LIKE '%a%'
-    OR noti_date LIKE '%a%'
-ORDER BY
-    noti_code DESC;
 
 
 -- member_id 별 주문내역 조회 셀렉문 

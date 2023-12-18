@@ -17,259 +17,255 @@
 
 <!-- 서브페이지 내용 붙여넣기할 부분 -->
 
-    <div class="container light-style flex-grow-1 container-p-y">
-        <h4 class="font-weight-bold py-3 mb-4">
-            My page
-        </h4>
-        <div class="card overflow-hidden">
-            <div class="row no-gutters row-bordered row-border-light">
-                <div class="col-md-3 pt-0">
-                    <div class="list-group list-group-flush account-settings-links">
-                        <a class="list-group-item list-group-item-action active" data-toggle="list"
-                           href="#account-general">프로필</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                           href="#account-change-password">비밀번호</a>
-                        <!--                                <a class="list-group-item list-group-item-action" data-toggle="list"-->
-                        <!--                                    href="#account-social-links">Social links</a>-->
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                           href="#account-order-history" id="order-history">주문 내역</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                           href="#account-notifications">알림</a>
-
-                    </div>
+<div class="container light-style flex-grow-1 container-p-y">
+    <h4 class="font-weight-bold py-3 mb-4">
+        My page
+    </h4>
+    <div class="card overflow-hidden">
+        <div class="row no-gutters row-bordered row-border-light">
+            <div class="col-md-3 pt-0">
+                <div class="list-group list-group-flush account-settings-links">
+                    <a class="list-group-item list-group-item-action active" data-toggle="list"
+                       href="#account-general">프로필</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list"
+                       href="#account-change-password">비밀번호</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list"
+                       href="#account-order-history" id="order-history">주문 내역</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list"
+                       href="#account-notifications">알림</a>
                 </div>
-                <div class="col-md-9">
-                    <div class="tab-content">
-                        <div class="tab-pane fade active show" id="account-general">
-                            <div class="card-body media align-items-center">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
-                                     class="d-block ui-w-80">
-                                <div class="media-body ml-4">
-                                    <label class="btn btn-outline-primary">
-                                        사진 업로드
-                                        <input type="file" class="account-settings-fileinput">
-                                    </label>
-                                    <button type="button" class="btn btn-default md-btn-flat">Reset</button>
-                                    <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-                                </div>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="form-label">아이디</label>
-<!--                                    <input type="text" class="form-control mb-1"-->
-<!--                                           th:value="${session.loginMember.memberId}"  readonly>-->
-                                    <input type="text" class="form-control mb-1"
-                                           th:value="customer1" id="member-id" readonly>
-                                </div>
-<!--                                <div class="form-group">-->
-<!--                                    <label class="form-label">이름</label>-->
-<!--                                    <input type="text" class="form-control" th:value="${session.loginMember.name}"-->
-<!--                                           readonly>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label class="form-label">이메일</label>-->
-<!--                                    <input type="text" class="form-control mb-1" th:value="${session.loginMember.email}"-->
-<!--                                           readonly>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label class="form-label">주소</label>-->
-<!--                                    <input type="text" class="form-control"-->
-<!--                                           th:value="|${session.loginMember.address} ${session.loginMember.address2} ${session.loginMember.address3}|"-->
-<!--                                           readonly>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label class="form-label">휴대전화</label>-->
-<!--                                    <input type="text" class="form-control" th:value="${session.loginMember.hp}"-->
-<!--                                           readonly>-->
-<!--                                </div>-->
-
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="account-general">
+                        <div class="card-body media align-items-center">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
+                                 class="d-block ui-w-80">
+                            <div class="media-body ml-4">
+                                <label class="btn btn-outline-primary">
+                                    사진 업로드
+                                    <input type="file" class="account-settings-fileinput">
+                                </label>
+                                <button type="button" class="btn btn-default md-btn-flat">Reset</button>
+                                <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="account-change-password">
-                            <div class="card-body pb-2">
-                                <div class="form-group">
-<!--                                    <label class="form-label">현재 비밀번호</label>-->
-<!--                                    <input type="password" class="form-control"-->
-<!--                                           th:value="${session.loginMember.password}" readonly>-->
-                                </div>
+                        <hr class="border-light m-0">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">아이디</label>
+                                <!--                                    <input type="text" class="form-control mb-1"-->
+                                <!--                                           th:value="${session.loginMember.memberId}"  readonly>-->
+                                <input type="text" class="form-control mb-1"
+                                       th:value="customer1" id="member-id" readonly>
+                            </div>
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label class="form-label">이름</label>-->
+                            <!--                                    <input type="text" class="form-control" th:value="${session.loginMember.name}"-->
+                            <!--                                           readonly>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label class="form-label">이메일</label>-->
+                            <!--                                    <input type="text" class="form-control mb-1" th:value="${session.loginMember.email}"-->
+                            <!--                                           readonly>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label class="form-label">주소</label>-->
+                            <!--                                    <input type="text" class="form-control"-->
+                            <!--                                           th:value="|${session.loginMember.address} ${session.loginMember.address2} ${session.loginMember.address3}|"-->
+                            <!--                                           readonly>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="form-group">-->
+                            <!--                                    <label class="form-label">휴대전화</label>-->
+                            <!--                                    <input type="text" class="form-control" th:value="${session.loginMember.hp}"-->
+                            <!--                                           readonly>-->
+                            <!--                                </div>-->
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="account-change-password">
+                        <div class="card-body pb-2">
+                            <div class="form-group">
+                                <!--                                    <label class="form-label">현재 비밀번호</label>-->
+                                <!--                                    <input type="password" class="form-control"-->
+                                <!--                                           th:value="${session.loginMember.password}" readonly>-->
                             </div>
                         </div>
+                    </div>
 
-                        <div class="tab-pane fade" id="account-connections">
-                            <div class="card-body">
-                                <button type="button" class="btn btn-twitter">Connect to
-                                    <strong>Twitter</strong></button>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body">
-                                <h5 class="mb-2">
-<!--                                    <a href="javascript:void(0)" class="float-right text-muted text-tiny"><i-->
-<!--                                            class="ion ion-md-close"></i> Remove</a>-->
-<!--                                    <i class="ion ion-logo-google text-google"></i>-->
-<!--                                    You are connected to Google:-->
-                                </h5>
-                                <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                   data-cfemail="f9979498818e9c9595b994989095d79a9694">[email&#160;protected]</a>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body">
-                                <button type="button" class="btn btn-facebook">Connect to
-                                    <strong>Facebook</strong></button>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body">
-                                <button type="button" class="btn btn-instagram">Connect to
-                                    <strong>Instagram</strong></button>
-                            </div>
+                    <div class="tab-pane fade" id="account-connections">
+                        <div class="card-body">
+                            <button type="button" class="btn btn-twitter">Connect to
+                                <strong>Twitter</strong></button>
                         </div>
+                        <hr class="border-light m-0">
+                        <div class="card-body">
+                            <h5 class="mb-2">
+                                <!--                                    <a href="javascript:void(0)" class="float-right text-muted text-tiny"><i-->
+                                <!--                                            class="ion ion-md-close"></i> Remove</a>-->
+                                <!--                                    <i class="ion ion-logo-google text-google"></i>-->
+                                <!--                                    You are connected to Google:-->
+                            </h5>
+                            <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                               data-cfemail="f9979498818e9c9595b994989095d79a9694">[email&#160;protected]</a>
+                        </div>
+                        <hr class="border-light m-0">
+                        <div class="card-body">
+                            <button type="button" class="btn btn-facebook">Connect to
+                                <strong>Facebook</strong></button>
+                        </div>
+                        <hr class="border-light m-0">
+                        <div class="card-body">
+                            <button type="button" class="btn btn-instagram">Connect to
+                                <strong>Instagram</strong></button>
+                        </div>
+                    </div>
 
 
+                    <div class="tab-pane fade custom-style" id="account-order-history">
+                        <div class="wrapper">
 
+                            <section class="accordian-container">
 
-                        <div class="tab-pane fade custom-style" id="account-order-history">
-                            <div class="wrapper">
-
-                                <section class="accordian-container">
-
-                                    <div class="accordian-item">
-                                        <div class="accordian-title">
-                                            <div class="left">
-                                                <div class="title" id="order-id">
-                                                    Order 1
-                                                </div>
-                                                <div class="item-count" id="order-amount">
-                                                    - 1 item
-                                                </div>
-                                                <div class="total" id="order-price-all">
-                                                    Total £46.00
-                                                </div>
+                                <div class="accordian-item">
+                                    <div class="accordian-title">
+                                        <div class="left">
+                                            <div class="title" id="order-id">
+                                                Order 1
                                             </div>
-                                            <div class="showhide">
-                                                View
+                                            <div class="item-count" id="order-amount">
+                                                - 1 item
+                                            </div>
+                                            <div class="total" id="order-price-all">
+                                                Total £46.00
                                             </div>
                                         </div>
-                                        <article class="accordian-content">
-                                            <div class="title">
-                                                <div class="qty">Qty</div>
-                                                <div class="product">Product</div>
-                                                <div class="price">Price</div>
-                                                <div class="returns">Returns</div>
-                                            </div>
-                                            <div class="item">
-                                                <div class="item-wrapper">
-                                                    <div class="qty">
-                                                        <div class="qty-wrapper">
-                                                            <p>5</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product">
-                                                        <img src="https://www.placecage.com/70/70" alt="">
-                                                        <div class="product-detail">
-                                                            3 Months membership
-                                                            <div class="warning">
-                                                                You have already confirmed a return for this product
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="price">£45.00</div>
-                                                    <div class="returns">Cancel</div>
-                                                </div>
-                                            </div>
-
-
-                                        </article>
-                                        <article class="accordian-footer">
-                                            <div class="date">Date: 21/08/2019</div>
-                                            <div class="right">
-                                                <div class="status">Status: <div class="success">Success</div></div>
-                                                <div class="ref">Ref: BO-0917439</div>
-                                            </div>
-                                        </article>
+                                        <div class="showhide">
+                                            View
+                                        </div>
                                     </div>
-                                </section>
+                                    <article class="accordian-content">
+                                        <div class="title">
+                                            <div class="qty">Qty</div>
+                                            <div class="product">Product</div>
+                                            <div class="price">Price</div>
+                                            <div class="returns">Returns</div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="item-wrapper">
+                                                <div class="qty">
+                                                    <div class="qty-wrapper">
+                                                        <p>5</p>
+                                                    </div>
+                                                </div>
+                                                <div class="product">
+                                                    <img src="https://www.placecage.com/70/70" alt="">
+                                                    <div class="product-detail">
+                                                        3 Months membership
+                                                        <div class="warning">
+                                                            You have already confirmed a return for this product
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="price">£45.00</div>
+                                                <div class="returns">Cancel</div>
+                                            </div>
+                                        </div>
 
 
-                            </div>
-                        </div>
-                        </div>
-
-
-                        <div class="tab-pane fade" id="account-notifications">
-                            <div class="card-body pb-2">
-                                <h6 class="mb-4">Activity</h6>
-                                <div class="form-group">
-                                    <label class="switcher">
-                                        <input type="checkbox" class="switcher-input" checked>
-                                        <span class="switcher-indicator">
-                                                    <span class="switcher-yes"></span>
-                                                    <span class="switcher-no"></span>
-                                                </span>
-                                        <span class="switcher-label">Email me when someone comments on my article</span>
-                                    </label>
+                                    </article>
+                                    <article class="accordian-footer">
+                                        <div class="date">Date: 21/08/2019</div>
+                                        <div class="right">
+                                            <div class="status">Status:
+                                                <div class="success">Success</div>
+                                            </div>
+                                            <div class="ref">Ref: BO-0917439</div>
+                                        </div>
+                                    </article>
                                 </div>
-                                <div class="form-group">
-                                    <label class="switcher">
-                                        <input type="checkbox" class="switcher-input" checked>
-                                        <span class="switcher-indicator">
+                            </section>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="account-notifications">
+                    <div class="card-body pb-2">
+                        <h6 class="mb-4">Activity</h6>
+                        <div class="form-group">
+                            <label class="switcher">
+                                <input type="checkbox" class="switcher-input" checked>
+                                <span class="switcher-indicator">
                                                     <span class="switcher-yes"></span>
                                                     <span class="switcher-no"></span>
                                                 </span>
-                                        <span class="switcher-label">Email me when someone answers on my forum
+                                <span class="switcher-label">Email me when someone comments on my article</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="switcher">
+                                <input type="checkbox" class="switcher-input" checked>
+                                <span class="switcher-indicator">
+                                                    <span class="switcher-yes"></span>
+                                                    <span class="switcher-no"></span>
+                                                </span>
+                                <span class="switcher-label">Email me when someone answers on my forum
                                                     thread</span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="switcher">
-                                        <input type="checkbox" class="switcher-input">
-                                        <span class="switcher-indicator">
-                                                    <span class="switcher-yes"></span>
-                                                    <span class="switcher-no"></span>
-                                                </span>
-                                        <span class="switcher-label">Email me when someone follows me</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body pb-2">
-                                <h6 class="mb-4">Application</h6>
-                                <div class="form-group">
-                                    <label class="switcher">
-                                        <input type="checkbox" class="switcher-input" checked>
-                                        <span class="switcher-indicator">
-                                                    <span class="switcher-yes"></span>
-                                                    <span class="switcher-no"></span>
-                                                </span>
-                                        <span class="switcher-label">News and announcements</span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="switcher">
-                                        <input type="checkbox" class="switcher-input">
-                                        <span class="switcher-indicator">
-                                                    <span class="switcher-yes"></span>
-                                                    <span class="switcher-no"></span>
-                                                </span>
-                                        <span class="switcher-label">Weekly product updates</span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="switcher">
-                                        <input type="checkbox" class="switcher-input" checked>
-                                        <span class="switcher-indicator">
-                                                    <span class="switcher-yes"></span>
-                                                    <span class="switcher-no"></span>
-                                                </span>
-                                        <span class="switcher-label">Weekly blog digest</span>
-                                    </label>
-                                </div>
-                            </div>
+                            </label>
                         </div>
-
+                        <div class="form-group">
+                            <label class="switcher">
+                                <input type="checkbox" class="switcher-input">
+                                <span class="switcher-indicator">
+                                                    <span class="switcher-yes"></span>
+                                                    <span class="switcher-no"></span>
+                                                </span>
+                                <span class="switcher-label">Email me when someone follows me</span>
+                            </label>
+                        </div>
+                    </div>
+                    <hr class="border-light m-0">
+                    <div class="card-body pb-2">
+                        <h6 class="mb-4">Application</h6>
+                        <div class="form-group">
+                            <label class="switcher">
+                                <input type="checkbox" class="switcher-input" checked>
+                                <span class="switcher-indicator">
+                                                    <span class="switcher-yes"></span>
+                                                    <span class="switcher-no"></span>
+                                                </span>
+                                <span class="switcher-label">News and announcements</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="switcher">
+                                <input type="checkbox" class="switcher-input">
+                                <span class="switcher-indicator">
+                                                    <span class="switcher-yes"></span>
+                                                    <span class="switcher-no"></span>
+                                                </span>
+                                <span class="switcher-label">Weekly product updates</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="switcher">
+                                <input type="checkbox" class="switcher-input" checked>
+                                <span class="switcher-indicator">
+                                                    <span class="switcher-yes"></span>
+                                                    <span class="switcher-no"></span>
+                                                </span>
+                                <span class="switcher-label">Weekly blog digest</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
 <!--        <div class="text-right mt-3">-->
 <!--            <button type="button" class="btn btn-warning"><a-->
@@ -278,8 +274,8 @@
 <!--                    th:href="@{/grrreung/delete/{memberId}(memberId=${session.loginMember.memberId})}">회원탈퇴</a></button>-->
 <!--        </div>-->
 
-        </div>
-        <th:block th:replace="~{/fragments/fragment_footer :: footerFragment}"/>
+
+<th:block th:replace="~{/fragments/fragment_footer :: footerFragment}"/>
 
 
 </body>
