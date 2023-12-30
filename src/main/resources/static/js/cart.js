@@ -34,17 +34,28 @@ $(document).ready(function () {
             amount_total = amount_total + (parseInt(converse_unit) || 0);
         });
 
-        //총 상품금액
+        //총 상품금액 업데이트
         $('.cart_total_price').children().find(".item_price").text(amount_total.toLocaleString());
 
-        // 총 배송비
+        // 총 배송비 초기화
         let total_delivery_price = 0;
 
-        // 상품이 선택되있을 때 배송비 나오게
+        // 선택된 상품이 있는지 확인
         let selectedItems = $('.cart_list li input[name="item_chk"]:checked');
         if (selectedItems.length > 0) {
-            total_delivery_price = parseInt($('.cart_total_price').children().find('.delivery_price').text().replace(/[^0-9]/g, "") || 0);
+            // 선택된 상품이 있을 경우, 배송비를 가져옴
+            total_delivery_price = 3000;
+        } else {
+            // 선택된 상품이 없을 경우, 배송비를 0으로 설정
+            total_delivery_price = 0;
         }
+
+        // 화면에 표시되는 배송비 업데이트
+        $('.cart_total_price').children().find('.delivery_price').text(total_delivery_price.toLocaleString());
+
+        // 총 결제금액 업데이트
+        let total_payment_amount = amount_total + total_delivery_price;
+        $('.cart_total_price').children().find('.total_price').text(total_payment_amount.toLocaleString());
 
         // 삭제 버튼에 표시되는 선택된 상품 수 업데이트
         let total_price = amount_total + total_delivery_price;
@@ -269,30 +280,3 @@ function goToOrder() {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
