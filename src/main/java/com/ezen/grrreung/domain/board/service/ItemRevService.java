@@ -1,7 +1,9 @@
 package com.ezen.grrreung.domain.board.service;
 
 import com.ezen.grrreung.domain.board.dto.ItemRev;
+import com.ezen.grrreung.domain.board.mapper.ItemRevMapper;
 import com.ezen.grrreung.web.common.RequestParams;
+import com.ezen.grrreung.web.common.page.CommonParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,8 @@ import java.util.Map;
 
 
 public interface ItemRevService {
+//    private final BoardRepository boardRepository;
+//    private final ItemRevMapper itemRevMapper;
 
     // 리뷰 등록
     public void posting(ItemRev itemRev);
@@ -46,6 +50,6 @@ public interface ItemRevService {
     public int itemRevPostCount(int itemId);
 
     // 아이템 상세보기 페이지에서 보여줄 리뷰목록 조회
-    public List<ItemRev> itemReviewAll(int itemId);
+    public List<ItemRev> itemReviewAll(int ItemId);
 
 }

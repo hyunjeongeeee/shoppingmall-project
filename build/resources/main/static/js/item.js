@@ -1,3 +1,11 @@
+
+let totalData; //총 데이터 수
+let dataPerPage=5; //한 페이지에 나타낼 글 수
+let pageCount = 5; //페이징에 나타낼 페이지 수
+let globalCurrentPage=1; //현재 페이지
+let dataList; //표시하려하는 데이터 리스트
+let itemId = $("#itemId").text();
+
 $(document).ready(function() {
     var slider = $("#slider");
     var thumb = $("#thumb");
@@ -64,6 +72,8 @@ $(document).ready(function() {
         slider.data('owl.carousel').to(number, 300, true);
     });
 
+
+    // 수량 (+ , -)  조절
     $(".qtyminus").on("click", function() {
         var now = $(".qty").val();
         if ($.isNumeric(now) && parseInt(now) > 0) {
@@ -92,80 +102,184 @@ $(document).ready(function() {
         totalAmountPrint.text(new Intl.NumberFormat().format(totalAmount) + "원");
     });
 
+// **************************************************************************************
+ // 상세정보 <-----> 리뷰 탭 이동
+    // Tab Menu
+        let descTab = $('#desc_tab');
+        let revTab = $('#review-tab');
+
+        descTab.click(function () {
+            descTab.addClass('active');
+            revTab.removeClass('active');
+            $('#description').addClass('active show');
+            $('#review').removeClass('active show');
+        });
+
+        revTab.click(function () {
+            descTab.removeClass('active');
+            revTab.addClass('active');
+            $('#description').removeClass('active show');
+            $('#review').addClass('active show');
+        });
 
 
 
+// **************************************************************************************
+
+        // dataPerPage = $("#dataPerPage").val();
+        dataPerPage = 5;
+        console.log("아이템 아이디: "+ itemId);
+        console.log("데이터 개수 선택: "+ dataPerPage);
+
+        $.ajax({ // ajax로 데이터 가져오기
+            method: "GET",
+            url: "/grrreung/itemrev/all-reviews?itemId="+itemId,
+            contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                // console.log("ajax데이터 확인: " + data);
+                for(var i = 0; i<data.length; i++){
+                    console.log("글번호: " + data[i].REV_CODE
+                        + " | 제목 : "+ data[i].REV_TITLE
+                        + " | 작성자 : " + data[i].MEMBER_ID
+                        + " | 등록일 : "+ data[i].REV_DATE
+                        + " [ITEM ID : "+ data[i].ITEM_ID + "]");
+                }
+
+                //데이터 대입
+                dataList = data;
+                //totalData(총 데이터 수) 구하기
+                totalData = dataList.length;
+                //글 목록 표시 호출 (테이블 생성)
+                displayData(1, dataPerPage);
+                //페이징 표시 호출
+                paging(totalData, dataPerPage, pageCount, 1);
+            },
+            error : function(request, status, error){
+                console.log("code:"+request.status+"\n"+"error:"+error);
+            }
+        });
+
+
+
+//현재 페이지(currentPage)와 페이지당 글 개수(dataPerPage) 반영
+    function displayData(currentPage, dataPerPage) {
+
+        let chartHtml = "";
+
+//Number로 변환하지 않으면 아래에서 +를 할 경우 스트링 결합이 되어버림..
+        currentPage = Number(currentPage);
+        dataPerPage = Number(dataPerPage);
+
+        let maxpnum=(currentPage - 1) * dataPerPage + dataPerPage; ///추가
+        if(maxpnum>totalData){maxpnum=totalData;} //추가
+
+        for (var i = (currentPage - 1) * dataPerPage; i < maxpnum && i < dataList.length; i++) {
+
+            chartHtml +=
+                "<tr><td>" +
+                dataList[i].REV_CODE +
+                "</td><td class='rev_title'>" +
+                dataList[i].REV_TITLE  +
+                "</td><td>" +
+                dataList[i].MEMBER_ID +
+                "</td><td>" +
+                dataList[i].REV_DATE +
+                "</td></tr>" +
+                "<tr class='rev_cont_wrap'><td colspan='4' class='rev_cont toggle-hide'><p>" +
+                dataList[i].REV_CONT +
+                "</p></td></tr>";
+        } //dataList는 임의의 데이터임.. 각 소스에 맞게 변수를 넣어주면 됨...
+        $(".review-board").html(chartHtml);
+    }
+    function paging(totalData, dataPerPage, pageCount, currentPage) {
+        console.log("현재페이지 : " + currentPage);
+
+        totalPage = Math.ceil(totalData / dataPerPage); //총 페이지 수
+
+        if(totalPage<pageCount){
+            pageCount=totalPage;
+        }
+
+        let pageGroup = Math.ceil(currentPage / pageCount); // 페이지 그룹
+        let last = pageGroup * pageCount; //화면에 보여질 마지막 페이지 번호
+
+        if (last > totalPage) {
+            last = totalPage;
+        }
+
+        let first = last - (pageCount - 1); //화면에 보여질 첫번째 페이지 번호
+        let next = last + 1;
+        let prev = first - 1;
+
+        let pageHtml = "";
+
+        if (prev > 0) {
+            pageHtml += "<li class='page-item'><a href='#' class='page-link' id='prev'>&laquo;</a></li>";
+        }
+
+        //페이징 번호 표시
+        for (var i = first; i <= last; i++) {
+            if (currentPage == i) {
+                pageHtml +=
+                    "<li class='page-item'><a href='#' class='page-link'>" + i + "</a></li>";
+            } else {
+                pageHtml += "<li class='page-item'><a class='page-link'>" + i + "</a></li>";
+            }
+        }
+
+        if (last < totalPage) {
+            pageHtml += "<li class='page-item'><a class='page-link' id='next'>&rsaquo;</a></li>";
+        }
+
+        $(".pagination").html(pageHtml);
+
+        // let displayCount = "";
+        // displayCount = "현재 1 - " + totalPage + " 페이지 / " + totalData + "건";
+        // $("#displayCount").text(displayCount);
+
+
+        //페이징 번호 클릭 이벤트
+        $(".pagination li a").click(function () {
+            let $id = $(this).attr("id");
+            selectedPage = $(this).text();
+
+            if ($id == "next") selectedPage = next;
+            if ($id == "prev") selectedPage = prev;
+
+            //전역변수에 선택한 페이지 번호를 담는다...
+            globalCurrentPage = selectedPage;
+            //페이징 표시 재호출
+            paging(totalData, dataPerPage, pageCount, selectedPage);
+            //글 목록 표시 재호출
+            displayData(selectedPage, dataPerPage);
+        });
+
+    }
+
+    // $("#dataPerPage").change(function () {
+    //     dataPerPage = $("#dataPerPage").val();
+    //     //전역 변수에 담긴 globalCurrent 값을 이용하여 페이지 이동없이 글 표시개수 변경
+    //     paging(totalData, dataPerPage, pageCount, globalCurrentPage);
+    //     displayData(globalCurrentPage, dataPerPage);
+    // });
 
 });
 
 
-// 리뷰 페이지 이동 비동기처리  ------------------------------------------------------------------------------------------
-
-// const pageBtn = $('.page-link');
-// const pageNum = pageBtn.text();
-// pageBtn.attr('onclick',loadPage(pageNum));
-
-function loadPage(page) {
-    let itemId = $("#itemId").text();
-    console.log("itemId : " + itemId);
-    console.log("page : " + page)
-
-
-    // 페이지를 비동기적으로 로드하는 로직을 작성
-    $.ajax({
-        url: '/grrreung/itemrev/all-reviews',  // 페이지 로드할 URL
-        type: 'GET',
-        data: { itemId: itemId, page: page },
-        dataType: 'json',
-        success: function(data) {
-            // 페이지 내용을 업데이트
-            console.dir("data : " + data);
-            updateReviewBoard(data);
-        },
-        error: function(error) {
-            console.error('Error loading page:', error);
-        }
-    });
-}
-
-function updateReviewBoard(data) {
-    // Assuming data is an array of ItemRev objects
-    let reviewBoard = $('.review-board');
-    reviewBoard.empty(); // Clear the existing content
-
-    data.forEach(function(itemRev) {
-        let row = $('<tr>');
-        row.append('<td>' + itemRev.revCode + '</td>');
-        row.append('<td><a href="/grrreung/itemrev/' + itemRev.revCode + '">' + itemRev.revTitle + '</a></td>');
-        row.append('<td>' + itemRev.memberId + '</td>');
-        row.append('<td>' + itemRev.revDate + '</td>');
-        reviewBoard.append(row);
-    });
-}
 
 
 
+// 리뷰 내용 페이지 안에서 보여주기 (페이지 이동하지 않고)
+// 동적으로 생성한 요소 => document.on
+$(document).on("click", ".rev_title", function () {
+    console.log("제목클릭");
+    $(this).closest('tr').next().find('.rev_cont').slideToggle(300);
+    $(this).closest('tr').next().find('.rev_cont').toggleClass('toggle-hide')
+    $(".rev_title").not(this).closest('tr').next().find('.rev_cont').slideUp(300);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// 페이지 로드 시 rev_cont를 숨김
 
 
 

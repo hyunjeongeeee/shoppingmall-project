@@ -277,4 +277,19 @@
 }
 
 
+#desc_tab, #review-tab, .rev_title {
+	/*display: block;*/
+	cursor: pointer;
+}
+.rev_cont_wrap {
+	background-color: #ececec;
+}
+.rev_cont>p{
+	padding: 40px 0 40px 100px;
+	text-align: start;
+	color: #333;
+}
 
+.toggle-hide {
+	display: none;
+}

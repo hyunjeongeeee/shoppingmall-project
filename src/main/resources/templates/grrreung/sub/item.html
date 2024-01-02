@@ -16,8 +16,8 @@
 
     <!-- 공통 환경설정 -->
     <th:block th:replace="~{/fragments/fragment_config :: configFragment}" />
-    <link rel="stylesheet" href="/css/item.css">
     <link rel="stylesheet" href="/css/notice.css">
+    <link rel="stylesheet" href="/css/item.css">
     <title>그르릉 Grr-reung 상세페이지</title>
 </head>
 <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
@@ -152,10 +152,10 @@
                 <div class="product-info-tabs">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                           <li class="nav-item">
-                            <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
+                            <a class="nav-link active" id="desc_tab">Description</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false"  th:text="|Reviews (${revCount})|">Reviews (0)</a>
+                            <a class="nav-link" id="review-tab" th:text="|Reviews (${revCount})|">Reviews (0)</a>
                           </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -182,50 +182,63 @@
                                           </thead>
 
                                       <tbody class="review-board">
-                                        <tr th:each="itemRev : ${list}" >
-                                            <td th:text="${itemRev.revCode}"></td>
-                                            <td><a th:text="${itemRev.revTitle}" th:href="@{/grrreung/itemrev/{revCode}(revCode=${itemRev.revCode})}"></a></td>
-                                            <td th:text="${itemRev.memberId}"></td>
-                                            <td th:text="${itemRev.revDate}"></td>
-                                        </tr>
+<!--                                        <tr th:each="itemRev : ${list}" >-->
+<!--                                            <td th:text="${itemRev.revCode}"></td>-->
+<!--                                            <td><a th:text="${itemRev.revTitle}" th:href="@{/grrreung/itemrev/{revCode}(revCode=${itemRev.revCode})}"></a></td>-->
+<!--                                            <td th:text="${itemRev.memberId}"></td>-->
+<!--                                            <td th:text="${itemRev.revDate}"></td>-->
+<!--                                        </tr>-->
                                       </tbody>
                                       </table>
 
                                       <!-- 게시글이 없을경우 아래-->
                                       <th:block th:if="${#lists.isEmpty(list)}">
-                                          <p style="text-align: center; padding: 30px 0; box-sizing: border-box; font-size: large">리뷰가 존재하지 않습니다</p>
+                                          <p style="text-align: center; padding: 30px 0; box-sizing: border-box; font-size: large">등록된 리뷰가 없습니다.</p>
                                       </th:block>
-<!--****************************************************************************************************************************************-->
-                                      <nav aria-label="Page navigation example">
-                                          <!-- itemId 값을 HTML에 추가 => 브라우저상에는 나타나지 않음 *** -->
+<!--****************************** #1안 ) *************************************************************************************************-->
+<!--                                      <nav aria-label="Page navigation example">-->
+<!--                                          &lt;!&ndash; itemId 값을 HTML에 추가 => 브라우저상에는 나타나지 않음 *** &ndash;&gt;-->
                                           <div type="text" id="itemId" th:text="${item.itemId}" style="display:none;" ></div>
 
-                                          <ul class="pagination">
+<!--                                          <ul class="pagination">-->
 <!--                                              <li th:if="${pagination.isShowFirst()}" class="page-item">-->
-<!--                                                  <a class="page-link" th:href="@{/itemrev(page=1)}">&laquo;</a>-->
+<!--                                                  <a class="page-link" th:href="@{/grrreung/itemrev(page=1)}">&laquo;</a>-->
 <!--                                              </li>-->
-                                              <ul class="pagination">
-                                              <li th:if="${pagination.isShowPrevious()}" class="page-item">
-                                                  <a class="page-link"  th:attr="onclick='loadPage(' + ${pagination.getPreviousStartPage()} + ')">&lsaquo;</a>
-                                              </li>
 
-                                              <li th:each="page : ${#numbers.sequence(pagination.getStartPage(),pagination.getEndPage())}" class="page-item">
-                                                  <a class="page-link" th:attr="onclick='loadPage(' + ${page} + ')'" name="page" th:text="${page}"></a>
-                                              </li>
+<!--                                              <li th:if="${pagination.isShowPrevious()}" class="page-item">-->
+<!--                                                  <a class="page-link"  th:attr="onclick='loadPage(' + ${pagination.getPreviousStartPage()} + ')">&lsaquo;</a>-->
+<!--                                              </li>-->
 
-                                              <li th:if="${pagination.isShowNext()}" class="page-item">
-                                                  <a class="page-link"  th:attr="onclick='loadPage(' + ${pagination.getNextStartPage()} + ')'">&rsaquo;</a>
-                                              </li>
-                                              </ul>
+<!--                                              <li th:each="page : ${#numbers.sequence(pagination.getStartPage(),pagination.getEndPage())}" class="page-item">-->
+<!--                                                  <a class="page-link" th:attr="onclick='loadPage(' + ${page} + ')'" name="page" th:text="${page}"></a>-->
+<!--                                              </li>-->
 
-                                              <!--                                              <li th:if="${pagination.isShowLast()}" class="page-item">-->
+<!--                                              <li th:if="${pagination.isShowNext()}" class="page-item">-->
+<!--                                                  <a class="page-link"  th:attr="onclick='loadPage(' + ${pagination.getNextStartPage()} + ')'">&rsaquo;</a>-->
+<!--                                              </li>-->
+
+
+<!--                                              <li th:if="${pagination.isShowLast()}" class="page-item">-->
 <!--                                                  <a class="page-link"-->
-<!--                                                     th:href="@{/grrreung/shop/item(itemId = ${item.itemId}, page=${pagination.totalPages})}">&raquo;</a>-->
+<!--                                                        th:href="@{/grrreung/shop/item(itemId = ${item.itemId}, page=${pagination.totalPages})}">&raquo;</a>-->
 <!--                                              </li>-->
+<!--                                          </ul>-->
+<!--                                      </nav>-->
+<!--****************************** #2안 ) *************************************************************************************************-->
+<!--                                      <select id="dataPerPage">-->
+<!--                                          <option value="3">3개씩보기</option>-->
+<!--                                          <option value="5">5개씩보기</option>-->
+<!--                                          <option value="10">10개씩보기</option>-->
+<!--                                      </select>-->
+
+<!--                                      <span id="displayCount"></span>-->
+<!--                                      <table id="dataTableBody">-->
+
+<!--                                      </table>-->
 
 
-                                          </ul>
-                                      </nav>
+                                      <ul class="pagination">
+                                      </ul>
 <!--***********************************************원본*****************************************************************************************-->
 <!--                                            <nav aria-label="Page navigation example">-->
 <!--                                                <ul class="pagination">-->
@@ -245,12 +258,8 @@
 
 <!--****************************************************************************************************************************************-->
 
-
-
                                   </div>
                               </div>
-
-
 
                           </div>
                     </div>
@@ -265,12 +274,12 @@
 
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>-->
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous" defer></script>
+<!--	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous" defer></script>-->
 
 
     <script src="/js/owl.carousel.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
-<script src="/js/item.js"></script>
+    <script src="/js/item.js"></script>
 
 
 </body>

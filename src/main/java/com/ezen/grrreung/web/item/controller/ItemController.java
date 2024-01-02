@@ -115,7 +115,7 @@ public class ItemController {
         // 리뷰 리스트 출력하기
         // 페이징 처리와 관련된 변수
         int elementSize = 5; // 화면에 보여지는 행의 갯수
-        int pageSize = 5;     // 화면에 보여지는 페이지 갯수
+        int pageSize = 2;     // 화면에 보여지는 페이지 갯수
         String search = Integer.toString(itemId);
         // 여러개의 요청 파라메터 정보 저장
         RequestParams params = new RequestParams(page, elementSize, pageSize, search);

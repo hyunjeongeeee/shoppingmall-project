@@ -188,16 +188,19 @@
 			item_id = #{itemId}
 	</select>
 
-
 	<!-- 아이템 상세보기 페이지에서 보여줄 리뷰목록 조회 -->
 	<select id="itemReviewAll" parameterType="int" resultType="map">
 		SELECT
-			rev_code, item_id, rev_title, rev_title, rev_cont, rev_date, member_id
+			rev_code, rev_title, rev_cont,
+			to_char(rev_date, 'yyyy-MM-DD HH24:MI:SS') rev_date, member_id, item_id
 		FROM
 			item_rev
 		WHERE
 			item_id = #{itemId}
+		ORDER BY
+		    rev_code DESC
 	</select>
+
 
 </mapper>
 

@@ -88,24 +88,18 @@
 
         <nav id="store" class="w-full z-30 top-0 px-6 py-1">
             <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
-                <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl " href="sub/shop.html">
+                <a class="uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl " th:href="@{/grrreung/shop}">
                     <h2>All ITEMS</h2>
                 </a>
 <!--                 검색창 -->
-<!--                <div class="flex items-center" id="store-nav-content">-->
-<!--                    <form>-->
-<!--                        <button type="submit" class="search-btn fa ib-m">-->
-<!--                            <i class="fa-solid fa-magnifying-glass"></i>-->
-<!--                        </button>-->
+                <div id="sb-search" class="sb-search " >
+                    <form action="/grrreung/shop" method="get">
+                        <input class="sb-search-input " onkeyup="buttonUp();" placeholder="Enter your search term..." type="search" value="" name="search" id="search">
+                        <input class="sb-search-submit" type="submit"  value="">
+                        <span class="sb-icon-search"><i class="fa fa-search"></i></span>
+                    </form>
+                </div>
 
-<!--                        <div class="search-slide ib-m">-->
-<!--                            <input type="text" placeholder="Enter your search" class="ib-m items-center">-->
-<!--                            <div class="search-close ib-m">-->
-<!--                                <i class="fa fa-times"></i>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
 
             </div>
         </nav>

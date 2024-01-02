@@ -175,26 +175,20 @@ public class ItemRevController {
     }
 
     // 아이템 상세보기 페이지에 보여줄 리뷰 목록 조회
+
+    @RequestMapping("/all-reviews")
     @ResponseBody
-    @GetMapping("/all-reviews")
-    public ResponseEntity<List<ItemRev>> findItemReviews(@RequestParam String itemId, Model model
+    public List<ItemRev> findItemReviews(
+            @RequestParam int itemId, Model model
             , @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 
+
+        int reviewCount = itemRevService.itemRevPostCount(itemId);
+        List<ItemRev> list = itemRevService.itemReviewAll(itemId);
+        log.info("reviewCount : {}", reviewCount);
         log.info("itemId : {}",itemId);
-        log.info("page : {}", page);
 
-        // 데이터
-        RequestParams params = new RequestParams(page, 5, 5, itemId);
-        int reviewCount = itemRevService.postListCount(params);
-        List<ItemRev> list = itemRevService.postList(params);
-
-        model.addAttribute("list", list);
-        Pagination pagination = new Pagination(params, reviewCount);
-        // 페이징 계산 로직을 여기서 생략하고, 페이지에 맞는 데이터를 가져오는 로직을 추가해야 함
-        model.addAttribute("pagination", pagination);
-        // 데이터를 가져와서 model에 추가하는 로직도 필요
-
-        return ResponseEntity.ok(list);
+        return list;
     }
 
 
