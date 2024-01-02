@@ -1,7 +1,6 @@
 package com.ezen.grrreung.domain.order.service;
 
 import com.ezen.grrreung.domain.order.dto.OrderGr;
-import com.ezen.grrreung.domain.transaction.NotEnoughMoneyException;
 
 import java.util.List;
 import java.util.Map;
