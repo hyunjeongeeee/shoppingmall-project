@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper	namespace="com.ezen.grrreung.domain.item.mapper.ItemMapper">
+<mapper   namespace="com.ezen.grrreung.domain.item.mapper.ItemMapper">
 
-	<!-- 판매중인상품만 최신 등록순으로 보여주게 처리 -->
+	<!-- 판매중인상품만 아이템 아이디순(최신 등록순)으로 보여주게 처리 -->
 	<select id="findAllItems" resultType="Item">
-		SELECT item_id,	cate_code, item_name, item_price, item_amount, item_detail,	item_sell_status
+		SELECT item_id,   cate_code, item_name, item_price, item_amount, item_detail,   item_sell_status
 		FROM item
 		WHERE item_sell_status = 'sell'
 		ORDER BY item_id DESC
@@ -13,7 +13,7 @@
 
 	<!-- 상품 번호로 1개의 상품 조회 -->
 	<select id="findByItemId" parameterType="int" resultType="Item">
-		SELECT item_id,	cate_code, item_name, item_price, item_amount, item_detail,	item_sell_status
+		SELECT item_id,   cate_code, item_name, item_price, item_amount, item_detail,   item_sell_status
 		FROM item
 		<where>
 			<if test="item_id != null">
@@ -54,16 +54,16 @@
 							i.item_detail,
 							i.item_sell_status
 						FROM category c
-							 	INNER JOIN item i
-						 		ON c.cate_code = i.cate_code
+								 INNER JOIN item i
+											ON c.cate_code = i.cate_code
 						WHERE
-							cate_top = #{search}
-						  	and item_sell_status = 'sell'
+							item_sell_status = 'sell'
+						  and cate_top = #{search}
+						ORDER BY item_id DESC
 					)
 			)
 		WHERE
 			page = #{requestPage}
-		ORDER BY item_id ASC
 	</select>
 
 	<!-- 상품 이미지중 대표사진 *썸네일* 검색 -->
@@ -135,49 +135,49 @@
 	<!-- 요청 파라미터 값에 따른 아이템 목록 => 상품명으로 검색하기 -->
 	<select id="findByParams" parameterType="RequestParams" resultType="Item">
 		SELECT
-			item_id,
-			item_name,
-			item_price
-			FROM
-				(
-				SELECT
-				ceil(ROWNUM / #{elementSize}) page,
-				item_id,
-				item_name,
-				item_price
-			FROM
-				(
-				SELECT
-				item_id,
-				item_name,
-				item_price
-					FROM
-					item
-		<where>
-			<if test="search != null">
-		    	item_name LIKE '%'||#{search}||'%' and
-			</if>
-			item_sell_status = 'sell'
-		</where>
-					)
-				)
+		item_id,
+		item_name,
+		item_price
+		FROM
+		(
+		SELECT
+		ceil(ROWNUM / #{elementSize}) page,
+		item_id,
+		item_name,
+		item_price
+		FROM
+		(
+		SELECT
+		item_id,
+		item_name,
+		item_price
+		FROM
+		item
+		WHERE
+		item_sell_status = 'sell'
+		<if test="search != null">
+			AND item_name LIKE '%'||#{search}||'%'
+		</if>
+		ORDER BY item_id DESC
+		)
+		)
 		WHERE
 		page = #{requestPage}
-		ORDER BY item_id ASC
+		ORDER BY item_id DESC
 	</select>
 
 
 	<!-- 요청 파라미터에 해당하는 상품 개수 -->
 	<select id="countByParams" parameterType="RequestParams" resultType="int">
 		SELECT
-			COUNT(*) count
+		COUNT(*) count
 		FROM
-			item
+		item
 		<where>
 			<if test="search != null">
 				item_name LIKE '%'||#{search}||'%' and
 			</if>
-				item_sell_status LIKE 'sell'
+			item_sell_status LIKE 'sell'
 		</where>
 	</select>
 
@@ -204,13 +204,13 @@
 		SELECT item_img_id_sq.NEXTVAL FROM dual
 	</select>
 
-	<!--	<update id="selectThumbnail" parameterType="int">-->
-	<!--		UPDATE item_img-->
-	<!--		SET-->
-	<!--			rep_img_yn = 'Y'-->
-	<!--		WHERE-->
-	<!--			item_img_id = #{value}-->
-	<!--	</update>-->
+	<!--   <update id="selectThumbnail" parameterType="int">-->
+	<!--      UPDATE item_img-->
+	<!--      SET-->
+	<!--         rep_img_yn = 'Y'-->
+	<!--      WHERE-->
+	<!--         item_img_id = #{value}-->
+	<!--   </update>-->
 
 
 
@@ -233,21 +233,37 @@
 		WHERE i.item_id = #{value}
 	</select>
 
-	<!--	<update id="updateItem">-->
-	<!--		UPDATE item-->
-	<!--		SET-->
-	<!--		SELECT-->
-	<!--			c.cate_top,-->
-	<!--			c.cate_name,-->
-	<!--			i.item_name,-->
-	<!--			i.item_id,-->
-	<!--			i.item_price,-->
-	<!--			i.item_detail,-->
-	<!--			i.item_sell_status-->
-	<!--		FROM-->
-	<!--			category c-->
-	<!--				INNER JOIN item i ON c.cate_code = i.cate_code-->
-	<!--	</update>-->
+	<!-- itemId로 카테고리 가져오기 -->
+	<select id="getCateByItemId" parameterType="int" resultType="Category">
+		SELECT
+			*
+		FROM
+			category
+		WHERE
+				cate_code = (
+				SELECT
+					cate_code
+				FROM
+					item
+				WHERE
+					item_id = #{itemId}
+			)
+	</select>
+	<!--   <update id="updateItem">-->
+	<!--      UPDATE item-->
+	<!--      SET-->
+	<!--      SELECT-->
+	<!--         c.cate_top,-->
+	<!--         c.cate_name,-->
+	<!--         i.item_name,-->
+	<!--         i.item_id,-->
+	<!--         i.item_price,-->
+	<!--         i.item_detail,-->
+	<!--         i.item_sell_status-->
+	<!--      FROM-->
+	<!--         category c-->
+	<!--            INNER JOIN item i ON c.cate_code = i.cate_code-->
+	<!--   </update>-->
 
 
 
@@ -256,13 +272,13 @@
 
 
 	<!-- 상품 번호로 1개의 이미지 검색 후 대표사진 여부 수정하기 -->
-	<!--	<update id="updateRepImg">-->
-	<!--		UPDATE item_img-->
-	<!--		SET-->
-	<!--			rep_img_yn = #{repImgYN}-->
-	<!--		WHERE-->
-	<!--			item_img_id = #{itemImgId}-->
-	<!--	</update>-->
+	<!--   <update id="updateRepImg">-->
+	<!--      UPDATE item_img-->
+	<!--      SET-->
+	<!--         rep_img_yn = #{repImgYN}-->
+	<!--      WHERE-->
+	<!--         item_img_id = #{itemImgId}-->
+	<!--   </update>-->
 
 
 

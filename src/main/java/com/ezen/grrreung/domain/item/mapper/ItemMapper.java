@@ -1,5 +1,6 @@
 package com.ezen.grrreung.domain.item.mapper;
 
+import com.ezen.grrreung.domain.cart.dto.Cart;
 import com.ezen.grrreung.domain.item.dto.Category;
 import com.ezen.grrreung.domain.item.dto.Item;
 import com.ezen.grrreung.domain.item.dto.ItemImg;
@@ -70,5 +71,8 @@ public interface ItemMapper {
     
     // 상품 수정 페이지에서 나타낼 수정이 가능한 상품 정보 가져오기
     public Map<String, Object> updateItemInfo(int itemId);
+
+//====================================================================================== jiyeon
+   public Category getCateByItemId(int itemId);
 
 }

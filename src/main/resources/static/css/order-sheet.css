@@ -119,7 +119,7 @@ textarea {
 }
 
 /*~~~~mobile start~~~~*/
- header
+header
 header {
     min-width: 360px;
     margin: 0 auto;
@@ -155,7 +155,7 @@ header {
     cursor: pointer;
 }
 
- hambuger menu
+hambuger menu
 #menuToggle {
     display: block;
     position: relative;
@@ -387,10 +387,10 @@ footer ul p {
     }
 
     /* labtop-footer */
-/*    footer {*/
-/*        padding: 80px 100px;*/
-/*        padding-bottom: 200px;*/
-/*    }*/
+    /*    footer {*/
+    /*        padding: 80px 100px;*/
+    /*        padding-bottom: 200px;*/
+    /*    }*/
 
 }
 

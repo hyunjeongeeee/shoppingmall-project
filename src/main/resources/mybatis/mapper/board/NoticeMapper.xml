@@ -83,6 +83,19 @@
 		WHERE noti_code = #{notiCode}
 	</select>
 
+	<!-- 게시글 수정 -->
+	<update id="updateByBno" parameterType="Notice">
+		UPDATE notice
+		SET noti_title = #{notiTitle},
+			noti_cont = #{notiCont}
+		WHERE noti_code = #{notiCode}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM notice
+		WHERE noti_code = #{notiCode}
+	</delete>
 
 
 	

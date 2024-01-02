@@ -272,17 +272,17 @@ body {
 /* New styles for the custom-notice container */
 .custom-notice {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto 40px;
   padding: 40px;
   border: 2px solid #FFC924; /* 변경: 박스의 테두리 두께와 색상 */
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
+  /*margin-bottom: 40px;*/
 }
 
 .custom-notice h1 {
-  font-size: 36px;
+  font-size: 20px;
   color: #333;
   margin-bottom: 20px;
 }
@@ -293,15 +293,23 @@ body {
   margin-bottom: 15px;
 }
 
+/* 작성일시 */
+.custom-notice p:nth-of-type(2) {
+  font-size: 13px;
+
+}
+
 .custom-notice .btn {
   display: inline-block;
-  padding: 12px 24px;
+  padding: 5px 10px;
   margin-right: 10px;
+  margin-top: 20px;
+  margin-bottom: 5px;
   background-color: #FFC924;
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 14px;
   transition: background-color 0.3s;
   border: none;
 }
@@ -325,13 +333,41 @@ body {
   margin-right: 0;
 }
 
-/* Ensure proper spacing for the buttons */
-.custom-notice .btn {
-  margin-top: 20px;
-  margin-bottom: 5px;
-}
+/*!* Ensure proper spacing for the buttons *!*/
+/*.custom-notice .btn {*/
+/*  margin-top: 20px;*/
+/*  margin-bottom: 5px;*/
+/*}*/
 
 /* Ensure elements are centered */
 .custom-notice {
   text-align: center;
+}
+
+.re-ip {
+  margin-top: 10px;
+  width: 90%;
+  border: 2px solid #555;
+}
+
+.re-div {
+  margin: 10px auto;
+  width: 80%;
+  border-radius: 1px;
+  border: 2px solid #FFC924;
+  padding: 5px;
+  box-sizing: border-box;
+
+}
+.re-div p {
+  text-align: left;
+  color: #555;
+  font-size: 11px;
+}
+
+.qna-re-style {
+
+  border: none;
+  color: #0c63e4;
+
 }

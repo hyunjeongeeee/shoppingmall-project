@@ -70,7 +70,7 @@
 <!--                                      </div>-->
 
                                     <!-- 리뷰 총개수 -->
-                                    <span>3 Reviews</span>
+                                    <span th:text="${revCount+'Reviews'}">Reviews</span>
 
                                 </div>
 
@@ -106,35 +106,45 @@
                                 <!-- 수량 -->
                                 <label for="count">수량</label>
 
-<!--                                    <form method="post" th:action="@{/grrreung/add-to-cart/{itemId}/{memberId}(itemId=${itemId}, memberId = ${session.loginMember.memberId})}">-->
-                                    <form method="post" action="/grrreung/cart">
+                                <!-- 로그인으로 접근하는 경우-->
+                                    <form method="post" th:action="@{/grrreung/cart}" th:if="${session.loginMember}!=null" >
                                          <div class="display-flex">
                                             <div class="qtyminus caculatorBtn">-</div>
-                                                <input type="text" id="count" name="cartAmount" value="1" class="qty">
+                                                <input type="text" name="cartAmount" value="1" class="qty">
                                             <div class="qtyplus caculatorBtn">+</div>
                                          </div>
-
                                         <input style="display:none;" type="text" name="itemId" th:value="${item.itemId}">
-
                                         <label for="totalAmountPrint">총액 :
-                                            <input id="totalAmount" style="display:none;" th:value="${item.itemPrice}">
-                                            <span type="text" id="totalAmountPrint" name="totalAmountPrint" readonly th:text="|${#numbers.formatDecimal(item.itemPrice, 0, 'DEFAULT', 0, 'DEFAULT')}원|"></span>
+                                            <input class="totalAmount" style="display:none;" th:value="${item.itemPrice}">
+                                            <span type="text" class="totalAmountPrint" name="totalAmountPrint" readonly th:text="|${#numbers.formatDecimal(item.itemPrice, 0, 'DEFAULT', 0, 'DEFAULT')}원|"></span>
                                         </label>
-
-
                                         <div>
-                                            <!-- 로그인 접근하는 경우 장바구니에 담는 매핑-->
-                                            <button type="submit" th:if="${session.loginMember}!=null" class="round-gray-btn">장바구니</button>
-                                            <!-- 비회원으로 접근하는 경우 로그인페이지로 매핑 -->
-                                            <button type="submit" th:if="${session.loginMember}==null" th:href="@{/grrreung/login}" class="round-gray-btn">장바구니</button>
+                                            <button type="submit" class="round-gray-btn">장바구니</button>
                                             <button type="submit" href="#" class="round-black-btn">바로구매</button>
                                         </div>
                                     </form>
+                                <!-- 비회원으로 접근하는 경우 로그인페이지로 매핑 -->
+                                <form  th:action="@{/grrreung/login}" th:if="${session.loginMember}==null">
+                                    <div class="display-flex">
+                                        <div class="qtyminus caculatorBtn">-</div>
+                                        <input type="text" name="cartAmount" value="1" class="qty">
+                                        <div class="qtyplus caculatorBtn">+</div>
+                                    </div>
+
+                                    <input style="display:none;" type="text" name="itemId" th:value="${item.itemId}">
+
+                                    <label for="totalAmountPrint">총액 :
+                                        <input class="totalAmount" style="display:none;" th:value="${item.itemPrice}">
+                                        <span type="text" class="totalAmountPrint" name="totalAmountPrint" readonly th:text="|${#numbers.formatDecimal(item.itemPrice, 0, 'DEFAULT', 0, 'DEFAULT')}원|"></span>
+                                    </label>
 
 
+                                    <div>
 
-
-
+                                        <button type="submit" class="round-gray-btn">장바구니</button>
+                                        <button type="submit" href="#" class="round-black-btn">바로구매</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -145,7 +155,7 @@
                             <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Reviews (0)</a>
+                            <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false"  th:text="|Reviews (${revCount})|">Reviews (0)</a>
                           </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -168,65 +178,80 @@
                                               <th scope="col" class="th-title">제목</th>
                                               <th scope="col" class="th-date">작성자</th>
                                               <th scope="col" class="th-date">등록일</th>
-                                              <th scope="col" class="th-date">조회수</th>
                                           </tr>
                                           </thead>
 
-                                          <tbody>
-                                        <!-- 지연언니한테 리뷰리스트 매핑 받아서 연결하기 -> 반복문 돌려서 리뷰 게시글 리스트 보여줄곳-->
-                                          <tr>
-                                              <td>1</td>
-                                              <th><a href="#!">리뷰제목</a></th>
-                                              <td>작성자</td>
-                                              <td>리뷰 등록일</td>
-                                              <td>0</td>
-                                          </tr>
-
-                                          </tbody>
+                                      <tbody class="review-board">
+                                        <tr th:each="itemRev : ${list}" >
+                                            <td th:text="${itemRev.revCode}"></td>
+                                            <td><a th:text="${itemRev.revTitle}" th:href="@{/grrreung/itemrev/{revCode}(revCode=${itemRev.revCode})}"></a></td>
+                                            <td th:text="${itemRev.memberId}"></td>
+                                            <td th:text="${itemRev.revDate}"></td>
+                                        </tr>
+                                      </tbody>
                                       </table>
+
+                                      <!-- 게시글이 없을경우 아래-->
+                                      <th:block th:if="${#lists.isEmpty(list)}">
+                                          <p style="text-align: center; padding: 30px 0; box-sizing: border-box; font-size: large">리뷰가 존재하지 않습니다</p>
+                                      </th:block>
+<!--****************************************************************************************************************************************-->
+                                      <nav aria-label="Page navigation example">
+                                          <!-- itemId 값을 HTML에 추가 => 브라우저상에는 나타나지 않음 *** -->
+                                          <div type="text" id="itemId" th:text="${item.itemId}" style="display:none;" ></div>
+
+                                          <ul class="pagination">
+<!--                                              <li th:if="${pagination.isShowFirst()}" class="page-item">-->
+<!--                                                  <a class="page-link" th:href="@{/itemrev(page=1)}">&laquo;</a>-->
+<!--                                              </li>-->
+                                              <ul class="pagination">
+                                              <li th:if="${pagination.isShowPrevious()}" class="page-item">
+                                                  <a class="page-link"  th:attr="onclick='loadPage(' + ${pagination.getPreviousStartPage()} + ')">&lsaquo;</a>
+                                              </li>
+
+                                              <li th:each="page : ${#numbers.sequence(pagination.getStartPage(),pagination.getEndPage())}" class="page-item">
+                                                  <a class="page-link" th:attr="onclick='loadPage(' + ${page} + ')'" name="page" th:text="${page}"></a>
+                                              </li>
+
+                                              <li th:if="${pagination.isShowNext()}" class="page-item">
+                                                  <a class="page-link"  th:attr="onclick='loadPage(' + ${pagination.getNextStartPage()} + ')'">&rsaquo;</a>
+                                              </li>
+                                              </ul>
+
+                                              <!--                                              <li th:if="${pagination.isShowLast()}" class="page-item">-->
+<!--                                                  <a class="page-link"-->
+<!--                                                     th:href="@{/grrreung/shop/item(itemId = ${item.itemId}, page=${pagination.totalPages})}">&raquo;</a>-->
+<!--                                              </li>-->
+
+
+                                          </ul>
+                                      </nav>
+<!--***********************************************원본*****************************************************************************************-->
+<!--                                            <nav aria-label="Page navigation example">-->
+<!--                                                <ul class="pagination">-->
+<!--                                                    <li th:if="${pagination.isShowFirst()}" class="page-item">-->
+<!--                                                        <a class="page-link">&laquo;</a></li>-->
+<!--                                                    <li th:if="${pagination.isShowPrevious()}" class="page-item">-->
+<!--                                                        <a class="page-link">&lsaquo;</a></li>-->
+<!--                                                    <li th:each="page : ${#numbers.sequence(pagination.getStartPage(),pagination.getEndPage())}" class="page-item">-->
+<!--                                                        <a class="page-link" name="page" th:text="${page}"></a>-->
+<!--                                                    </li>-->
+<!--                                                    <li th:if="${pagination.isShowNext()}" class="page-item">-->
+<!--                                                        <a class="page-link">&rsaquo;</a></li>-->
+<!--                                                    <li th:if="${pagination.isShowLast()}" class="page-item">-->
+<!--                                                        <a class="page-link">&raquo;</a></li>-->
+<!--                                                </ul>-->
+<!--                                            </nav>-->
+
+<!--****************************************************************************************************************************************-->
+
+
+
                                   </div>
                               </div>
-                              <!-- 게시글이 없을경우 아래-->
-<!--                              <p class="mb-20">리뷰가 존재하지 않습니다 (っ °Д °;)っ</p>-->
 
 
-                                <!-- 리뷰 작성하기 form -->
-<!--                              <form class="review-form">-->
-<!--                                <div class="form-group">-->
-<!--                                    <label>Your rating</label>-->
-<!--                                    <div class="reviews-counter">-->
-<!--                                        <div class="rate">-->
-<!--                                            <input type="radio" id="star5" name="rate" value="5" />-->
-<!--                                            <label for="star5" title="text">5 stars</label>-->
-<!--                                            <input type="radio" id="star4" name="rate" value="4" />-->
-<!--                                            <label for="star4" title="text">4 stars</label>-->
-<!--                                            <input type="radio" id="star3" name="rate" value="3" />-->
-<!--                                            <label for="star3" title="text">3 stars</label>-->
-<!--                                            <input type="radio" id="star2" name="rate" value="2" />-->
-<!--                                            <label for="star2" title="text">2 stars</label>-->
-<!--                                            <input type="radio" id="star1" name="rate" value="1" />-->
-<!--                                            <label for="star1" title="text">1 star</label>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <div class="form-group">-->
-<!--                                    <label>Your message</label>-->
-<!--                                    <textarea class="form-control" rows="10"></textarea>-->
-<!--                                </div>-->
-<!--                                <div class="row">-->
-<!--                                    <div class="col-md-6">-->
-<!--                                        <div class="form-group">-->
-<!--                                            <input type="text" name="" class="form-control" placeholder="Name*">-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="col-md-6">-->
-<!--                                        <div class="form-group">-->
-<!--                                            <input type="text" name="" class="form-control" placeholder="Email Id*">-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                <button class="round-black-btn">Submit Review</button>-->
-<!--                            </form>-->
+
                           </div>
                     </div>
                 </div>

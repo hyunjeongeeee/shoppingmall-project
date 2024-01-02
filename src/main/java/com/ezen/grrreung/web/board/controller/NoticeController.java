@@ -1,6 +1,7 @@
 package com.ezen.grrreung.web.board.controller;
 
 import com.ezen.grrreung.domain.board.dto.Notice;
+import com.ezen.grrreung.domain.board.dto.Notice;
 import com.ezen.grrreung.domain.board.service.NoticeService;
 import com.ezen.grrreung.web.common.Pagination;
 import com.ezen.grrreung.web.common.RequestParams;
@@ -76,6 +77,29 @@ public class NoticeController {
         Notice noticeInfo = noticeService.postInfo(notiCode);
         model.addAttribute("notice",noticeInfo);
         return "/grrreung/sub/notice-cont";
+    }
+
+    // 수정하기 겟매핑
+    @GetMapping("/update/{notiCode}")
+    public String postView(@PathVariable int notiCode, Model model) {
+        Notice noticeInfo = noticeService.postInfo(notiCode);
+        model.addAttribute("notice", noticeInfo);
+
+        return "/grrreung/sub/notice-update";
+    }
+
+    // 포스트매핑 -> 수정버튼
+    @PostMapping("/update/{notiCode}")
+    public String postUpdate(@ModelAttribute("notice") Notice notice) {
+        noticeService.updatePost(notice);
+        return "redirect:/grrreung/notice";
+    }
+
+    // 겟매핑 -> 삭제버튼
+    @GetMapping("/delete/{notiCode}")
+    public String delete(@PathVariable int notiCode, Model model) {
+        noticeService.deletePost(notiCode);
+        return "redirect:/grrreung/notice";
     }
 
 

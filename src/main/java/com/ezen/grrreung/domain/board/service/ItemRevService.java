@@ -1,13 +1,13 @@
 package com.ezen.grrreung.domain.board.service;
 
 import com.ezen.grrreung.domain.board.dto.ItemRev;
-import com.ezen.grrreung.domain.board.dto.Notice;
 import com.ezen.grrreung.web.common.RequestParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ItemRevService {
@@ -30,6 +30,22 @@ public interface ItemRevService {
     // 리뷰 수정
     public void updatePost(ItemRev itemRev);
 
+    // 상품명으로 상품id 가져오기
+    public int getItemId(String itemName);
 
+    // 구매 수량 검색
+    public int numberOfPurchases(Map<String, Object> map);
+
+    // 아이템별 작성된 게시글 수 검색
+    public int writtenPost(Map<String, Object> map);
+
+    // 아이템 상세페이지 리뷰목록 조회 - 아이템id
+    public List<ItemRev> itemReviews(RequestParams params);
+
+    // 아이템별 (전체 회원) 리뷰 개수 조회
+    public int itemRevPostCount(int itemId);
+
+    // 아이템 상세보기 페이지에서 보여줄 리뷰목록 조회
+    public List<ItemRev> itemReviewAll(int itemId);
 
 }

@@ -4,7 +4,6 @@
     <th:block th:replace="~{/fragments/fragment_config :: configFragment}"/>
     <link rel="stylesheet" href="/css/cart.css">
     <title>Grr-reung 그르릉 장바구니</title>
-
 </head>
 <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
 <!-- 헤더 -->
@@ -75,20 +74,18 @@
 
             <!-- 장바구니 총 결제 금액 -->
             <div class="cart_total_area">
-
                 <p>결제 정보</p>
                 <div class="cart_total_price">
                     <p>총 상품금액 <strong class="item_price"></strong>원 <span class="plus_ic"></span></p>
                     <p>총 배송비 <strong class="delivery_price" th:if="${#lists.isEmpty(list)}" th:text="${'0'}"></strong>
-                                 <strong class="delivery_price" th:if="${!#lists.isEmpty(list)}" th:text="${'3,000'}"></strong>원<span class="equal_ic"></span></p>
-                    <p>총 결제금액 <strong class="total_price color-red"></strong>원</p>
-
+                        <strong class="delivery_price" th:if="${!#lists.isEmpty(list)}" th:text="${'3,000'}"></strong>
+                        원 <span class="equal_ic"></span></p>
+                    <p>총 결제금액 <strong class="total_price color-red" ></strong>원</p>
                 </div>
             </div>
-
             <div class="btn_box">
                 <button type="button" onclick="location.href='/grrreung/shop'" class="btn wh-btn">계속 쇼핑하기</button>
-                <button type="button" class="btn black-btn">구매하기</button>
+                <button type="button" onclick="goToOrder()" class="btn black-btn">구매하기</button>
             </div>
         </div>
     </div>
@@ -98,6 +95,7 @@
 <!-- 푸터 -->
 <th:block th:replace="~{/fragments/fragment_footer :: footerFragment}"/>
 <script src="/js/cart.js"></script>
+
 
 </body>
 </html>

@@ -30,3 +30,97 @@ padding: 2px 5px 2px 25px}
 .cart_table .btn_box{padding: 4rem; text-align: center}
 .cart_table .btn_box .btn{padding: 10px 0; width: 24%; margin: 0 1%;}
 .cart_table .btn_box .black-btn{float: none}
+
+
+/* 주문정보 스타일 */
+.card-body {
+    padding: 0 4rem;
+    box-sizing: border-box;
+    margin-right: 2%;
+    margin-left: 2%;
+    margin-bottom: 20px;
+}
+
+hr {
+    border-top-width: 1px;
+    margin-bottom: 20px;}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 30%;
+    height: 35px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.row1, .row2 {
+    display: flex;
+}
+
+.row1 input[type="text"] {
+
+    margin-right: 10px;
+}
+
+.row2 input[type="text"] {
+    width: 30%;
+    margin-right: 10px;
+}
+
+/* 주문정보의 버튼 스타일 */
+.btn_box {
+    padding: 2rem;
+    text-align: center;
+}
+
+.btn_box .btn {
+    padding: 10px 0;
+    width: 48%;
+    margin: 0 1%;
+}
+
+.btn_box .black-btn {
+    float: none;
+}
+
+#postCodeBtn {
+    border: 1px solid;
+    height: 30px;
+    -webkit-appearance: button;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+#payBtn {
+    background-color: #ffc924;
+}
+.readonly {
+    border: 0px;
+    padding: 10px;
+}
+
+.ship {
+    height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+}
+.ship:first-of-type {
+    margin-bottom: 10px;
+}
+
+.row2 .ship:first-of-type {
+    height: 35px;
+    padding: 10px;
+}

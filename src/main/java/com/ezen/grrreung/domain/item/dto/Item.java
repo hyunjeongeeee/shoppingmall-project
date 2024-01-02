@@ -1,12 +1,14 @@
 package com.ezen.grrreung.domain.item.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class Item {
     private int itemId;
     private int cateCode;

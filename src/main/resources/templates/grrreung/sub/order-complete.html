@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{/fragments/fragment_config :: configFragment}"/>
+    <link rel="stylesheet" href="/css/cart.css">
+    <title>Grr-reung 그르릉 장바구니</title>
+</head>
+<body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
+<!-- 헤더 -->
+<th:block th:replace="~{/fragments/fragment_header :: headerFragment}"/>
+
+<!-- 서브페이지 내용 붙여넣기할 부분 -->
+<section class="bg-white py-8">
+    <div class="container mx-auto items-centerpt-4 pb-12">
+        <div class="cart_table">
+            <p>주문이 완료되었습니다</p>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- 푸터 -->
+<th:block th:replace="~{/fragments/fragment_footer :: footerFragment}"/>
+<script src="/js/cart.js"></script>
+
+
+</body>
+</html>

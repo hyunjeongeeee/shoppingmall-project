@@ -4,7 +4,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper	namespace="com.ezen.grrreung.domain.board.mapper.ItemRevMapper">
-<!--게시글등록-->
+	<!--게시글등록-->
 	<insert id="create" parameterType="ItemRev">
 		INSERT INTO item_rev(
 			rev_code,
@@ -13,11 +13,11 @@
 			rev_cont,
 			member_id
 		) VALUES (
-					 item_rev_no_seq.NEXTVAL,
-					 111111,
+					 item_rev_seq.NEXTVAL,
+					 #{itemId},
 					 #{revTitle},
 					 #{revCont},
-					 '멤버아이디'
+					 #{memberId}
 				 )
 	</insert>
 
@@ -28,7 +28,8 @@
 		rev_title,
 		rev_cont,
 		member_id,
-		rev_date
+		rev_date,
+		item_id
 		FROM
 		(
 		SELECT
@@ -37,7 +38,8 @@
 		rev_title,
 		rev_cont,
 		member_id,
-		rev_date
+		rev_date,
+		item_id
 		FROM
 		(
 		SELECT
@@ -45,14 +47,15 @@
 		rev_title,
 		rev_cont,
 		member_id,
-		to_char(rev_date, 'yyyy-MM-DD HH24:MI:SS') rev_date
+		to_char(rev_date, 'yyyy-MM-DD HH24:MI:SS') rev_date,
+		item_id
 		FROM
 		item_rev
 		<where>
 			<if test="search != null">
 				rev_title LIKE '%' || #{search} || '%'
 				OR rev_code LIKE '%' || #{search} || '%'
-				OR member_id LIKE '%' || #{search} || '%'
+				OR member_id = #{search}
 			</if>
 		</where>
 		ORDER BY
@@ -87,6 +90,114 @@
 		FROM item_rev
 		WHERE rev_code = #{revCode}
 	</select>
-	
+
+    <!-- 게시글 수정 -->
+    <update id="updateByBno" parameterType="ItemRev">
+        UPDATE item_rev
+        SET rev_title = #{revTitle},
+            rev_cont = #{revCont}
+        WHERE rev_code = #{revCode}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deletePost" parameterType="int">
+        DELETE FROM item_rev
+        WHERE rev_code = #{revCode}
+    </delete>
+
+<!--	상품명으로 상품코드 가져오기-->
+	<select id="getItemId" parameterType="string" resultType="int">
+		SELECT
+			item_id
+		FROM
+			item
+		WHERE
+			item_name = #{itemName}
+	</select>
+
+<!--	구매 수량 조회하기-->
+	<select id="numberOfPurchases" parameterType="map" resultType="int">
+		SELECT
+			oi.order_amount
+		FROM
+			order_gr og
+				JOIN member     m ON og.member_id = m.member_id
+				JOIN order_item oi ON og.order_id = oi.order_id
+		WHERE
+			og.member_id = #{memberId, jdbcType=VARCHAR}
+		  AND og.order_id = #{orderId, jdbcType=INTEGER}
+		  AND oi.order_item_id = #{itemId, jdbcType=INTEGER}
+
+	</select>
+
+<!--	아이템 별 작성된 후기 갯수-->
+	<select id="writtenPost" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*) cnt
+		FROM
+			item_rev
+		WHERE
+			item_id = #{itemId}
+		  And
+			member_id =#{memberId}
+	</select>
+
+	<!-- 아이템 상세페이지 리뷰목록 조회 - 아이템id -->
+	<select id="itemRevList" parameterType="RequestParams" resultType="ItemRev">
+		SELECT
+		rev_code,
+		rev_title,
+		rev_cont,
+		member_id,
+		rev_date
+		FROM
+		(
+			SELECT
+			ceil(ROWNUM / #{elementSize})  page,
+			rev_code,
+			rev_title,
+			rev_cont,
+			member_id,
+			rev_date
+			FROM
+			(
+			SELECT
+				rev_code,
+				rev_title,
+				rev_cont,
+				member_id,
+				to_char(rev_date, 'yyyy-MM-DD HH24:MI:SS') rev_date
+			FROM
+				item_rev
+			WHERE item_id= #{search}
+			ORDER BY
+				rev_code DESC
+			)
+				)
+		WHERE
+		page = #{requestPage}
+	</select>
+
+	<!-- 아이템별 (전체 회원) 리뷰 개수 조회 -->
+	<select id="itemRevPostCount" parameterType="int" resultType="int">
+		SELECT
+			COUNT(*) cnt
+		FROM
+			item_rev
+		WHERE
+			item_id = #{itemId}
+	</select>
+
+
+	<!-- 아이템 상세보기 페이지에서 보여줄 리뷰목록 조회 -->
+	<select id="itemReviewAll" parameterType="int" resultType="map">
+		SELECT
+			rev_code, item_id, rev_title, rev_title, rev_cont, rev_date, member_id
+		FROM
+			item_rev
+		WHERE
+			item_id = #{itemId}
+	</select>
+
 </mapper>
 

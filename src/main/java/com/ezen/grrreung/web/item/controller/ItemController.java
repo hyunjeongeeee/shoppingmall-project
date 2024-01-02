@@ -1,15 +1,12 @@
 package com.ezen.grrreung.web.item.controller;
 
 import com.ezen.grrreung.domain.board.dto.ItemRev;
+import com.ezen.grrreung.domain.board.service.ItemRevService;
 import com.ezen.grrreung.domain.item.dto.*;
 import com.ezen.grrreung.domain.item.service.ItemService;
-import com.ezen.grrreung.domain.member.dto.Member;
-import com.ezen.grrreung.domain.member.service.MemberService;
 import com.ezen.grrreung.web.common.Pagination;
 import com.ezen.grrreung.web.common.RequestParams;
 import com.ezen.grrreung.web.common.page.FileStore;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +33,8 @@ import java.util.*;
 @Slf4j
 public class ItemController {
 
-    private final MemberService memberService;
     private final ItemService itemService;
+    private final ItemRevService itemRevService;
 
     @Value("${file.dir}")
     private String location;
@@ -56,12 +53,12 @@ public class ItemController {
 
 
     // shop 상품 전체목록 불러오기
-    @GetMapping("/shop")
+    @RequestMapping("/shop")
     public String allItemsList(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-                               @RequestParam(value="searchValue", required = false, defaultValue = "") String searchValue,
+                               @RequestParam(value="search", required = false, defaultValue = "") String search,
                                @RequestParam(value="cateTop", required = false) String cateTop,
                                Model model){
-        log.info("들어온 검색값 : {}" ,searchValue);
+        log.info("들어온 검색값 : {}" ,search);
         log.info("들어온 카테고리값 : {}" , cateTop);
 
         // 페이징 처리와 관련된 변수
@@ -69,20 +66,17 @@ public class ItemController {
         int pageSize = 5;     // 화면에 보여지는 페이지 갯수
 
         // 여러개의 요청 파라메터 정보 저장
-        RequestParams params =  params = new RequestParams(page, elementSize, pageSize, searchValue);
+        RequestParams params = new RequestParams(page, elementSize, pageSize, search);
 
         int  selectCount = itemService.countBySearchValue(params);    // 페이징처리 값 테이블의 전체 갯수
-        List<Item> list;    // model에 저장할 리스트
+        List<Item> list = itemService.searchItem(params);  // model에 저장할 리스트
 
-        
+        // 카테고리 버튼으로 카테고리별 아이템 검색할때
         if(cateTop != null) {
-            // 카테고리 버튼으로 카테고리별 아이템 검색할때
             // params의 search 값을 cateTop으로 변경
             params.setSearch(cateTop);
             selectCount = itemService.countBySearchValue(params);
             list = itemService.findByCate(params);
-        } else {
-            list = itemService.searchItem(params);
         }
 
         // params : 사용자가 선택한 페이지번호 , 검색값 여부
@@ -92,7 +86,6 @@ public class ItemController {
             pagination.setEndPage(1);
         }
 
-
         model.addAttribute("params", params); // 요청 파라메터
         model.addAttribute("pagination", pagination); // 페이징 계산 결과
         model.addAttribute("item",list); // db 리스트
@@ -100,19 +93,13 @@ public class ItemController {
         return "/grrreung/sub/shop";
     }
 
-//    // 카테고리별 상품 출력
-//    @GetMapping("/shop/{cateTop}")
-//    public String itemCate(@PathVariable("cateTop")String cateTop, Model model) {
-//        List<Item> item = itemService.findByCate(cateTop);
-//        model.addAttribute("item", item);
-//        return "/grrreung/sub/shop";
-//    }
-
-
 
     // 아이템 아이디로 상품 한개 상세정보
-    @RequestMapping("/shop/item/{itemId}")
-    public String itemInfo(@PathVariable("itemId")int itemId, Model model){
+    @GetMapping("/shop/item/{itemId}")
+    public String itemInfo(@PathVariable("itemId") int itemId,
+                           @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                           Model model){
+
         Item item = itemService.findByItemId(itemId);
         log.info("아이템 상세정보 : {}", item.toString());
 
@@ -124,10 +111,39 @@ public class ItemController {
         model.addAttribute("item", item);
         model.addAttribute("imgFiles", imgFiles);
         model.addAttribute("itemDescription", itemDescription);
+
+        // 리뷰 리스트 출력하기
+        // 페이징 처리와 관련된 변수
+        int elementSize = 5; // 화면에 보여지는 행의 갯수
+        int pageSize = 5;     // 화면에 보여지는 페이지 갯수
+        String search = Integer.toString(itemId);
+        // 여러개의 요청 파라메터 정보 저장
+        RequestParams params = new RequestParams(page, elementSize, pageSize, search);
+        // 페이징처리 값 테이블의 전체 갯수
+        int selectCount = itemRevService.postListCount(params);
+        log.info("selectCount: {}",selectCount);
+
+        // params : 사용자가 선택한 페이지번호 , 검색값 여부
+        // 페이징 처리 계산 유틸리티 활용
+        Pagination pagination = new Pagination(params, selectCount);
+        if (pagination.getEndPage() == 0) {
+            pagination.setEndPage(1);
+        }
+        List<ItemRev> list = itemRevService.itemReviews(params);
+
+        log.info("리뷰정보 : {}", list);
+
+        model.addAttribute("params", params); // 요청 파라메터
+        model.addAttribute("pagination", pagination); // 페이징 계산 결과
+        model.addAttribute("list",list); // db 리스트
+
+        int revCount = itemRevService.itemRevPostCount(itemId); // 리뷰 총 개수
+        model.addAttribute("revCount",revCount);
+
         return "/grrreung/sub/item";
     }
 
-//==============================================================================================
+    //==============================================================================================
     // 썸네일 이미지 1개 불러오기 => index, shop
     @GetMapping("/thumbnail/{itemId}")
     public ResponseEntity<Resource> thumbnailImage(String fileName, @PathVariable("itemId")int itemId, Model model) throws IOException {
@@ -140,25 +156,25 @@ public class ItemController {
         String contentType = Files.probeContentType(path);
         log.info("컨텐트타입 : {}",contentType);
 
-		// 이미지 파일
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-		Resource resource = new FileSystemResource(path);
+        // 이미지 파일
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+        Resource resource = new FileSystemResource(path);
 
-		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
-	}
+        return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+    }
 
     //  이미지 1개 불러오기 => 보여주기
     @GetMapping("/img/{imgName}")
     public ResponseEntity<Resource> imageRender(@PathVariable("imgName") String imgName, Model model) throws IOException {
 
         Path path = Paths.get(location + imgName);
-		String contentType = Files.probeContentType(path);
+        String contentType = Files.probeContentType(path);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_TYPE, contentType);
-		Resource resource = new FileSystemResource(path);
-		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+        Resource resource = new FileSystemResource(path);
+        return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
     }
 
 //==============================================================================================
@@ -288,17 +304,12 @@ public class ItemController {
     // 회원 장바구니에 아이템 추가하기
     @RequestMapping("/my-cart")
     public String addItemToCart(){
-
-
         return "/grrreung/sub/cart";
     }
 
 
 
-//    @GetMapping("/order")
-//    public String orderSheet() {
-//        return "/grrreung/sub/order-sheet";
-//    }
+
 
 
 

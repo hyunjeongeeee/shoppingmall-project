@@ -49,4 +49,9 @@ public class CartServiceImpl implements CartService {
     public void removeCartOne(String memberId, int itemId) {
         cartMapper.deleteItemToCart(memberId, itemId);
     }
+
+    @Override
+    public List<Map<String, Object>> getCheckedList(Map<String,Object> map) {
+        return cartMapper.findByItemId(map);
+    }
 }

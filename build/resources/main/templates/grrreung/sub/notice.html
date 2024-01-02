@@ -28,7 +28,8 @@
                   <label for="search" class="blind">공지사항 내용 검색</label>
                   <input id="search" type="search" name="search" placeholder="제목 또는 날짜로 검색" >
                   <button type="submit" class="btn btn-dark searchBtn">검색</button>
-                  <a class="btn btn-dark postBtn" style="right: -130px" href="/grrreung/notice/create">글쓰기</a>
+
+                  <a th:if="${session.loginMember.admin} == 'Y'" class="btn btn-dark postBtn" style="right: -130px" href="/grrreung/notice/create">글쓰기</a>
 <!--                  th:if="${session.loginMember.getAdmin} == 'Y'"-->
               </div>
           </form>

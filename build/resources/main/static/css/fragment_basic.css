@@ -22,6 +22,9 @@ h2 {
     display: block;
 }
 
+
+
+
 .hover\:grow {
     transition: all 0.3s;
     transform: scale(1);
@@ -100,7 +103,7 @@ h2 {
 }
 .sub_nav_cont>li:last-child {
     margin-bottom: 0;
-    
+
 }
 
 .sub_nav_cont>li>a:hover {

@@ -35,22 +35,20 @@
                 <tbody>
                 <tr>
                     <th>
-                        <label>문의유형</label>
+                        <label>상품</label>
                     </th>
 
                     <td>
-                        <select>
-                            <option value="" disabled selected>카테고리</option>
-                            <option value="1">LIVING</option>
-                            <option value="2">WALKING</option>
-                            <option value="3">FOOD</option>
-                        </select>
-                        <select disabled="disabled">
-                            <option value="" disabled selected>상품선택</option>
-                            <option value="1">item1</option>
-                            <option value="2">item2</option>
-                            <option value="3">item3</option>
-                        </select>
+                        <a th:href="@{/grrreung/shop/item/{itemId}(itemId=${item.itemId})}">
+                            <img class="hover:grow hover:shadow-lg" th:src="@{'/grrreung/thumbnail/'+ ${item.itemId}}" width="80px" height="80px">
+                            <p class="name" th:text="${item.itemName}"></p>
+                        </a>
+<!--                        <select class="mainCategory" name="mainCategory" >-->
+<!--                            <option th:text="${category.cateTop}" th:value="${category.cateTop}" readonly ></option>-->
+<!--                        </select>-->
+<!--                        <select class="subCategory" name="cateCode" readonly="">-->
+<!--                            <option th:text="${category.cateName}" th:value="${category.cateName}" readonly ></option>-->
+<!--                        </select>-->
                     </td>
                 </tr>
                 <tr>
@@ -84,30 +82,11 @@
                         </div>
                     </td>
                 </tr>
-<!--                <tr>-->
-<!--                    <th>답변등록알림(선택)</th>-->
-<!--                    <td>-->
-<!--                        <ul>-->
-<!--                            <li><input type="checkbox" value="y">-->
-<!--                                <label>sms</label>-->
-<!--                                <select>-->
-<!--                                    <option>010</option>-->
-<!--                                    <option>02</option>-->
-<!--                                    <option>031</option>-->
-<!--                                    <option>0502</option>-->
-<!--                                </select><span>-</span>-->
-<!--                                <input type="tel"><span>-</span><input type="tel">-->
-<!--                            </li>-->
-<!--                            <li><input type="checkbox"><label>E-mail</label> <input type="email"><span>@</span><input-->
-<!--                                    type="email"></li>-->
-<!--                        </ul>-->
-<!--                    </td>-->
-<!--                </tr>-->
                 </tbody>
             </table>
             <div class="btn_wrap">
                 <button type="submit">등록</button>
-                <button href="#">취소</button>
+                <button th:href="@{/grrreung/itemrev}">취소</button>
             </div>
         </form>
     </div>

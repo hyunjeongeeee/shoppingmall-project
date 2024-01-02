@@ -1,6 +1,7 @@
 package com.ezen.grrreung.domain.board.mapper;
 
 import com.ezen.grrreung.domain.board.dto.ItemQna;
+import com.ezen.grrreung.domain.board.dto.ItemQnaRe;
 import com.ezen.grrreung.web.common.RequestParams;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,4 +30,9 @@ public interface ItemQnaMapper {
 
     // 조회수
     public void hitCountUpdate(int qnaCode);
+
+    // 문의답변등록
+    public void createRe(ItemQnaRe itemQnaRe);
+    // 등록된 답변 객체 가져오기
+    public ItemQnaRe getQnaRe(int qnaCode);
 }

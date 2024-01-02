@@ -17,7 +17,7 @@
                      101,
                      #{qnaTitle},
                      #{qnaCont},
-                     'member001'
+                     #{memberId}
                  )
 	</insert>
 
@@ -86,6 +86,29 @@
         FROM item_qna
         WHERE qna_code = #{qnaCode}
     </select>
-	
+
+    <!-- 문의 답변 등록 -->
+    <insert id="createRe" parameterType="ItemQnaRe" >
+        INSERT INTO item_qna_re (
+            re_code,
+            qna_code,
+            re_cont
+        ) VALUES (
+                     item_qna_re_seq.NEXTVAL,
+                     #{qnaCode},
+                     #{reCont}
+                 )
+        <selectKey keyProperty="reCode" resultType="int" order="AFTER">
+            SELECT item_qna_re_seq.CURRVAL FROM dual
+        </selectKey>
+    </insert>
+    <!-- 등록된 답변 가져오기 -->
+    <select id="getQnaRe" parameterType="int" resultType="ItemQnaRe">
+        SELECT
+            *
+        FROM
+            item_qna_re
+        where re_code = #{reCode}
+    </select>
 </mapper>
 

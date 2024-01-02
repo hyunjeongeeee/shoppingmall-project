@@ -11,7 +11,7 @@
 
     <!-- 로그인   -->
     <select id="login" parameterType="map" resultType="Member">
-        select member_id, password, name, hp, email, address, address2, address3, address4
+        select member_id, password, name, hp, email, admin, address, address2, address3, address4
         from member
         where member_id = #{memberId} and password = #{password}
     </select>

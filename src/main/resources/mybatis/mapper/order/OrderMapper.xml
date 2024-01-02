@@ -1,67 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper   namespace="com.ezen.grrreung.domain.order.mapper.OrderMapper">
+<mapper namespace="com.ezen.grrreung.domain.order.mapper.OrderMapper">
 
-	<!-- 주문하기 -->
-	<insert id="create" parameterType="OrderGr">
-		INSERT INTO order_grorder_gr (
-		order_id,
-		member_id,
-		order_memo,
-		order_name,
-		order_add,
-		order_hp,
-		order_price_all
-		)
-		VALUES(
-		ordergr_seq.NEXTVAL,
-		#{memberId},
-		#{orderMemo},
-		#{orderName},
-		#{orderAdd},
-		#{orderHp},
-		#{orderPriceAll}
-		)
-		<selectKey keyProperty="orderId" resultType="int" order="AFTER">
-			SELECT orders_seq.CURRVAL FROM dual
-		</selectKey>
-	</insert>
+    <!-- 주문하기 -->
+    <insert id="create" parameterType="OrderGr">
+        INSERT INTO order_gr (order_id,
+        member_id,
+        order_memo,
+        order_name,
+        order_add,
+        order_hp,
+        order_price_all)
+        VALUES (
+        order_gr_seq.NEXTVAL,
+        #{memberId},
+        #{orderMemo},
+        #{orderName},
+        #{orderAdd},
+        #{orderHp},
+        #{orderPriceAll}
+        )
+        <selectKey keyProperty="orderId" resultType="int" order="AFTER">
+            SELECT order_gr_seq.CURRVAL FROM dual
+        </selectKey>
+    </insert>
+    <insert id="createOrderItem" parameterType="OrderItem">
+        INSERT INTO order_item (order_item_id,
+                                order_id,
+                                item_id,
+                                order_price,
+                                order_amount)
+        VALUES (order_item_seq.NEXTVAL,
+                #{orderId},
+                #{itemId},
+                #{orderPrice},
+                #{orderAmount})
+    </insert>
+<!--    <update id="updatePayStatus" parameterType="OrderGr">-->
+<!--        UPDATE orders-->
+<!--        SET pay_status = #{payStatus}-->
+<!--        WHERE order_id = #{orderId}-->
+<!--    </update>-->
 
-	<update id="updatePayStatus" parameterType="OrderGr">
-		UPDATE orders
-		SET pay_status = #{payStatus}
-		WHERE order_id = #{orderId}
-	</update>
-
-	<!--   주문내역조회-->
-	<select id="orderHistoryByMember" parameterType="String" resultType="map" >
-		SELECT
-			og.order_id,
-			COUNT(oi.order_item_id)               AS order_item_id,
-			SUM(oi.order_price * oi.order_amount) AS order_price_all,
-			i.item_name,
-			oi.order_amount,
-			oi.order_price,
-			og.order_status,
-			og.order_date
-		FROM
-			order_gr og
-				JOIN order_item oi ON og.order_id = oi.order_id
-				JOIN item       i ON oi.item_id = i.item_id
-		WHERE
-			og.member_id = #{memberId}
-		GROUP BY
-			og.order_id,
-			og.order_status,
-			og.order_date,
-			i.item_name,
-			oi.order_amount,
-			oi.order_price
-		ORDER BY
-			og.order_date DESC
-	</select>
+    <!--	주문내역조회-->
+    <select id="orderHistoryByMember" parameterType="String" resultType="map">
+        SELECT og.order_id,
+               COUNT(oi.order_item_id)               AS order_item_id,
+               SUM(oi.order_price * oi.order_amount) AS order_price_all,
+               i.item_name,
+               i.item_id,
+               oi.order_amount,
+               oi.order_price,
+               og.order_status,
+               og.order_date
+        FROM order_gr og
+                 JOIN order_item oi ON og.order_id = oi.order_id
+                 JOIN item i ON oi.item_id = i.item_id
+        WHERE og.member_id = #{memberId}
+        GROUP BY og.order_id,
+                 og.order_status,
+                 og.order_date,
+                 i.item_name,
+                 i.item_id,
+                 oi.order_amount, oi.order_price
+        ORDER BY
+            og.order_id DESC
+    </select>
 
 </mapper>
+

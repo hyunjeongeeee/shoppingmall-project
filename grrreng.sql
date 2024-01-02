@@ -54,7 +54,6 @@ ALTER TABLE member ADD CONSTRAINT pk_member PRIMARY KEY ( member_id );
 ALTER TABLE cart ADD CONSTRAINT pk_cart PRIMARY KEY ( cart_id );
 
 COMMIT;
--- TEST INSERT ---------------------------------
 
 -- Insert data into member table
 INSERT INTO member (
@@ -74,6 +73,15 @@ INSERT INTO member (
 );
 
 select * from member;
+
+
+-- cart seq
+drop sequence cart_id_seq;
+
+CREATE SEQUENCE cart_id_seq
+    START WITH 1
+    INCREMENT BY 1; 
+
 
 -- Insert data into cart table
 INSERT INTO cart (

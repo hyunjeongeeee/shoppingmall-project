@@ -39,19 +39,16 @@
                     <th>
                         <label>문의유형</label>
                     </th>
-
                     <td>
-                        <select>
+                        <select class="mainCategory" name="mainCategory">
                             <option value="" disabled selected>카테고리</option>
-                            <option value="1">LIVING</option>
-                            <option value="2">WALKING</option>
-                            <option value="3">FOOD</option>
+                            <th:block th:each="category : ${cateList}">
+                                <option th:text="${category.cateTop}" th:value="${category.cateTop}"></option>
+                            </th:block>
                         </select>
-                        <select disabled="disabled">
-                            <option value="" disabled selected>상품선택</option>
-                            <option value="1">item1</option>
-                            <option value="2">item2</option>
-                            <option value="3">item3</option>
+
+                        <select class="subCategory" name="cateCode">
+                            <option value="" selected disabled>------</option>
                         </select>
                     </td>
                 </tr>
@@ -116,7 +113,7 @@
 
 
 </section>
-
+<script src="/js/qna-write.js"></script>
 <!-- 푸터 -->
 <th:block th:replace="~{/fragments/fragment_footer :: footerFragment}"/>
 </body>

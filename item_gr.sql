@@ -9,7 +9,7 @@ CREATE TABLE item (
 );
 
 
-select * from item;
+
 
 
 -- 상품 판매상태 제약조건 추가 
@@ -217,10 +217,55 @@ order by item_id DESC;
 
 
 
+SELECT
+			cate_code,
+			cate_top,
+			item_id,
+			item_name,
+			item_price,
+			item_detail,
+			item_sell_status
+		FROM
+			(
+				SELECT
+					CEIL(ROWNUM /15) page,
+					cate_code,
+					cate_top,
+					item_id,
+					item_name,
+					item_price,
+					item_detail,
+					item_sell_status
+				FROM
+					(
+						SELECT
+							c.cate_code,
+							c.cate_top,
+							i.item_id,
+							i.item_name,
+							i.item_price,
+							i.item_detail,
+							i.item_sell_status
+						FROM category c
+							 	INNER JOIN item i
+						 		ON c.cate_code = i.cate_code
+						WHERE
+							item_sell_status = 'sell'
+						    
+					)
+			)
+		WHERE
+			page = 1
+		ORDER BY item_id DESC;
 
 
-
-
+-- 아이템 상세보기 페이지에서 보여줄 리뷰목록 조회
+SELECT
+    rev_code, item_id, rev_title, rev_title, rev_cont, rev_date, member_id
+FROM
+    item_rev
+WHERE
+    item_id=12;
 
 
 

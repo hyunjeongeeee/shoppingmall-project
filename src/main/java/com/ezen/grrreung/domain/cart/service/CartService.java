@@ -28,4 +28,6 @@ public interface CartService {
     // 장바구니 상품 개별 삭제하기
     public void removeCartOne(String memberId, int itemId);
 
+    // 선택된 장바구니 상품 리스트
+    public List<Map<String, Object>> getCheckedList(Map<String, Object> map);
 }

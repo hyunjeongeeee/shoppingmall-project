@@ -37,7 +37,7 @@ public class MemberController {
         if (loginMember != null) {
             model.addAttribute("loggedIn", true);
             model.addAttribute("loginMember", loginMember);
-            
+
             session.setAttribute("loginMember", loginMember);
             return "redirect:/grrreung";
         } else {

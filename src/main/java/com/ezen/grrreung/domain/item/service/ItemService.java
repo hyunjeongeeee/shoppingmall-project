@@ -1,5 +1,6 @@
 package com.ezen.grrreung.domain.item.service;
 
+import com.ezen.grrreung.domain.cart.dto.Cart;
 import com.ezen.grrreung.domain.item.dto.Category;
 import com.ezen.grrreung.domain.item.dto.Item;
 import com.ezen.grrreung.domain.item.dto.ItemImg;
@@ -47,17 +48,22 @@ public interface ItemService {
 
 //--------------------------------------------------------------------------------------------------------
 
-    // 상품 등록
     public void registerItem(Item item);
+    // 상품 등록
 
-    // 상품 이미지 업로드
     public void uploadItemImg(ItemImg itemImg);
+    // 상품 이미지 업로드
 
-    // item_img_id 시퀀스 조회
     public int itemIdSequence();
+    // item_img_id 시퀀스 조회
 
-    // 상품 수정 페이지 출력
     public Map<String, Object> updateInfo(int itemId);
+    // 상품 수정 페이지 출력
+
+//--------------------------------------------------------------------------------------------------------jiyeon
+
+    // itemId로 카테고리 가져오기
+    public Category getCateByItemId(int itemId);
 
 
 }

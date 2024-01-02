@@ -1,13 +1,9 @@
 // 이벤트 타겟에 이벤트 리스너 등록
 document.querySelector("#order-history").addEventListener("click", orderHistory);
-let title = document.querySelector("#title");
 
-// 멤버아이디 가져오기
-let memberId = document.querySelector("#member-id").value;
 
 
 let createTag = document.querySelector("#account-order-history");
-let item_name, order_amount, order_price, order_status;
 
 // 가져온 리스트 뷰에 보여주기
 async function orderHistory(event) {
@@ -17,16 +13,20 @@ async function orderHistory(event) {
 	const ordersData = await getOrderHistory();
 
 	// 주문을 ORDER_ID를 기준으로 그룹화
-	const groupedOrders = ordersData.reduce((acc, order) => {
-		const orderId = order.ORDER_ID;
+	const groupedOrders = Array.isArray(ordersData)
+		? ordersData.reduce((acc, order) => {
+			const orderId = order.ORDER_ID;
 
-		if (!acc[orderId]) {
-			acc[orderId] = [];
-		}
 
-		acc[orderId].push(order);
-		return acc;
-	}, {});
+			if (!acc[orderId]) {
+				acc[orderId] = [];
+			}
+
+			acc[orderId].push(order);
+
+			return acc;
+		}, {})
+		: {};
 
 
 	// 데이터가 있을때만 생성
@@ -39,6 +39,11 @@ async function orderHistory(event) {
 		}
 	} else {
 		// 없을때 출력
+
+		const wrapperDiv = document.createElement('div');
+		wrapperDiv.classList.add('wrapper');
+		wrapperDiv.textContent='주문내역이 없습니다';
+		createTag.appendChild(wrapperDiv);
 		console.log('데이터가 없습니다.');
 	}
 
@@ -52,9 +57,12 @@ async function orderHistory(event) {
 		const totalOrderAmount = orderAmounts.length;
 
 		// 주문한 상품의 총 금액
-		const orderPrice = data.map(order => order.ORDER_PRICE_ALL);
-		const totalOrderPrice = orderPrice.reduce((sum, amount) => sum + amount, 0);
-		console.log(`ORDER_ID: ${totalOrderPrice}`);
+		const orderPrice = data.map(order => order.ORDER_PRICE);
+		let totalOrderPrice = 0;
+		orderPrice.forEach(sum => {
+			totalOrderPrice += sum;
+		});
+		console.log(`totalOrderPrice: ${totalOrderPrice}`);
 
 		// 주문 날짜(정규표현식 사용)
 		const orderDate = data.map(order => order.ORDER_DATE)[0].replace(/T|(\.\d{3})|(\+\d{2}:\d{2})/g, ' ');
@@ -139,13 +147,15 @@ async function orderHistory(event) {
 
 
 		for (const order of data) {
+			const itemId = order.ITEM_ID;
 			const itemName = order.ITEM_NAME;
 			const orderAmount = order.ORDER_AMOUNT;
 			const orderPrice = Number(order.ORDER_PRICE).toLocaleString() + '원';
 			const orderStatus = order.ORDER_STATUS;
 			const orderId = order.ORDER_ID;
-			const itemWrapperDiv = itemContent(itemName, orderAmount, orderPrice, orderStatus, orderId);
-			// console.log(`ITEM_NAME: ${itemName}, ORDER_AMOUNT: ${orderAmount}, ORDER_PRICE: ${orderPrice}, ORDER_STATUS: ${orderStatus}`);
+			const writtenPost = order.writtenPost;
+			const itemWrapperDiv = itemContent(itemName, orderAmount, orderPrice, orderStatus, orderId, itemId, writtenPost);
+			console.log(`ITEM_NAME: ${itemName}, ORDER_AMOUNT: ${orderAmount}, ORDER_PRICE: ${orderPrice}, ORDER_STATUS: ${orderStatus}, ITEM_ID: ${itemId}`);
 			accordianContent.appendChild(itemWrapperDiv);
 		}
 
@@ -173,7 +183,8 @@ async function orderHistory(event) {
 
 		const refDiv = document.createElement('div');
 		refDiv.classList.add('ref');
-		refDiv.textContent = `Ref: ${data.reference}`;
+		// refDiv.textContent = `Ref: ${data.reference}`;
+		refDiv.textContent = '';
 
 		statusDiv.appendChild(successDiv);
 
@@ -217,32 +228,12 @@ async function orderHistory(event) {
 	}
 
 
-	// // 후기작성 처리
-	// $(document).ready(function() {
-	//     $('#item-review').on('click', function(e) {
-	//         e.preventDefault(); // 기본 동작 방지 (페이지 이동 등)
-	//
-	//         // AJAX 요청
-	//         $.ajax({
-	//             url: `/itemrev/create/${name}/${orderId}`, // 서버의 매핑 경로
-	//             type: 'GET',
-	//             success: function(data) {
-	//                 // 성공 시 처리
-	//                 alert('이미 작성된 후기입니다.');
-	//             },
-	//             error: function() {
-	//                 // 오류 시 처리
-	//                 $('#result').text('오류 발생');
-	//             }
-	//         });
-	//     });
-	// });
 
 }
 
 
 // 아이템 출력 함수 생성
-function itemContent(name, amount, price, status, orderId) {
+function itemContent(name, amount, price, status, orderId, itemId, writtenPost ) {
 	const itemWrapperDiv = document.createElement('div');
 	itemWrapperDiv.classList.add('item-wrapper');
 
@@ -250,7 +241,7 @@ function itemContent(name, amount, price, status, orderId) {
 	productDiv.classList.add('product');
 
 	const productImage = document.createElement('img');
-	productImage.src = '../../../../../../upload/item01_image01.png';
+	productImage.src = "/grrreung/thumbnail/"+itemId;
 	productImage.alt = '';
 
 	const productDetailDiv = document.createElement('div');
@@ -258,11 +249,17 @@ function itemContent(name, amount, price, status, orderId) {
 	productDetailDiv.id = 'item-name-value';
 	productDetailDiv.textContent = name;
 
-	const warningDiv = document.createElement('div');
-	warningDiv.classList.add('warning');
-	warningDiv.textContent = '';
+	// const warningDiv = document.createElement('div');
+	// warningDiv.classList.add('warning');
+	// warningDiv.textContent = itemId;
+	//
+	// productDetailDiv.appendChild(warningDiv);
 
-	productDetailDiv.appendChild(warningDiv);
+	const itemIdInput = document.createElement('input');
+	itemIdInput.style = 'display: none';
+	itemIdInput.value = itemId;
+
+	productDetailDiv.appendChild(itemIdInput);
 
 	productDiv.appendChild(productImage);
 	productDiv.appendChild(productDetailDiv);
@@ -292,11 +289,14 @@ function itemContent(name, amount, price, status, orderId) {
 
 	// <a> 태그 생성
 	const anchorTag = document.createElement('a');
-	anchorTag.href = '#';  // 원하는 링크 주소 설정
 	anchorTag.id = 'item-review';
+	if ( writtenPost){
 	anchorTag.textContent = '후기 작성';
-	anchorTag.href = `/itemrev/create/${name}/${orderId}`;
-
+	anchorTag.href = `/grrreung/itemrev/create/${itemId}`;
+	} else {
+		anchorTag.textContent = '후기 보기';
+		anchorTag.href = `/grrreung/itemrev/myreview`;
+	}
 
 	// <a> 태그를 returnsDiv에 추가
 	returnsDiv.appendChild(anchorTag);
@@ -312,15 +312,10 @@ function itemContent(name, amount, price, status, orderId) {
 
 // db에서 주문내역 리스트 불러오기
 function getOrderHistory() {
-	const url = `/order?memberId=${memberId}`;
+	const url = `/grrreung/order`;
 	return fetch(url)
 		.then((response) => {
 			return response.json();
 		});
 }
 
-// 날짜 포맷팅
-function formatDateTime(dateTimeString) {
-	const formattedDateTime = dateTimeString.replace(/T|(\.\d{3})|(\+\d{2}:\d{2})/g, ' ');
-	return formattedDateTime;
-}

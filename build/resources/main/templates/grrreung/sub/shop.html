@@ -16,110 +16,108 @@
     <h2 class="category-title" th:fragment="title">SHOP</h2>
 </th:block>
 
-    <!-- 서브페이지 내용 붙여넣기할 부분 -->
-    <section class="bg-white py-8">
-        <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
-            <nav id="store" class="w-full z-30 top-0 px-6 py-1">
-                <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
-				<h2>All ITEMS</h2>
+<!-- 서브페이지 내용 붙여넣기할 부분 -->
+<section class="bg-white py-8">
+    <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
+        <nav id="store" class="w-full z-30 top-0 px-6 py-1">
+            <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
+                <h2>All ITEMS</h2>
 
-                    <div class="flex items-center" id="store-nav-content">
-                        <a class="pl-3 inline-block no-underline hover:text-black" href="#">
-                            <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                <path d="M7 11H17V13H7zM4 7H20V9H4zM10 15H14V17H10z" />
-                            </svg>
-                        </a>
+                <div class="flex items-center" id="store-nav-content">
+                    <a class="pl-3 inline-block no-underline hover:text-black" href="#">
+                        <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M7 11H17V13H7zM4 7H20V9H4zM10 15H14V17H10z" />
+                        </svg>
+                    </a>
 
-                        <select name="range" id="range_box">
-                            <option value="1" selected>신상품</option>
-                            <option value="2">상품명</option>
-                            <option value="3">낮은가격</option>
-                            <option value="4">높은가격</option>
-                        </select>
+                    <select name="range" id="range_box">
+                        <option value="1" selected>신상품</option>
+                        <option value="2">상품명</option>
+                        <option value="3">낮은가격</option>
+                        <option value="4">높은가격</option>
+                    </select>
 
                     <!-- 상품 검색 input  -->
                     <form th:action="@{/grrreung/shop(searchValue=${searchValue})}" method="get" >
-                        <input type="text" name="searchValue">
-<!--                            <a tclass="pl-3 inline-block no-underline hover:text-black" th:href="@{/grrreung/search(searchValue = ${searchValue})}">-->
-                                <a class="pl-3 inline-block no-underline hover:text-black"></a>
-                                <button type="submit" class="fill-current hover:text-black"  width="24" height="24">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
+                        <input type="text" name="search">
+                        <!--                            <a tclass="pl-3 inline-block no-underline hover:text-black" th:href="@{/grrreung/search(searchValue = ${searchValue})}">-->
+                        <a class="pl-3 inline-block no-underline hover:text-black"></a>
+                        <button type="submit" class="fill-current hover:text-black"  width="24" height="24">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
                     </form>
-                        </div>
                 </div>
-            </nav>
-
-<!-- ****** 반복문으로 상품 리스트 보여주기 ******************************************************************************************************************* -->
-
-            <div th:each="item : ${item}" class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-
-                <a th:href="@{/grrreung/shop/item/{itemId}(itemId = ${item.itemId})}" >
-                    <img class="hover:grow hover:shadow-lg" th:src="@{'/grrreung/thumbnail/'+ ${item.itemId}}">
-                    <div class="pt-3 flex items-center justify-between">
-                        <p th:text="${item.itemName}">상품명</p>
-                        <svg class="h-6 w-6 fill-current text-gray-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12,4.595c-1.104-1.006-2.512-1.558-3.996-1.558c-1.578,0-3.072,0.623-4.213,1.758c-2.353,2.363-2.352,6.059,0.002,8.412 l7.332,7.332c0.17,0.299,0.498,0.492,0.875,0.492c0.322,0,0.609-0.163,0.792-0.409l7.415-7.415 c2.354-2.354,2.354-6.049-0.002-8.416c-1.137-1.131-2.631-1.754-4.209-1.754C14.513,3.037,13.104,3.589,12,4.595z M18.791,6.205 c1.563,1.571,1.564,4.025,0.002,5.588L12,18.586l-6.793-6.793C3.645,10.23,3.646,7.776,5.205,6.209 c0.76-0.756,1.754-1.172,2.799-1.172s2.035,0.416,2.789,1.17l0.5,0.5c0.391,0.391,1.023,0.391,1.414,0l0.5-0.5 C14.719,4.698,17.281,4.702,18.791,6.205z" />
-                        </svg>
-                    </div>
-                    <p th:text="|${#numbers.formatInteger(item.itemPrice, 0, 'COMMA')}원|" class="pt-1 text-gray-900">상품가격</p>
-                </a>
-
             </div>
-
-
-        </div>
-
-        <th:block th:if="${#lists.isEmpty(item)}">
-            <p style="text-align: center; padding: 30px 0; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>
-        </th:block>
-
-        <!-- 페이지 번호 출력할곳 **************************************************** -->
-
-
-
-        <nav aria-label="Page navigation example">
-            <ul class="pagination" >
-                <li th:if="${pagination.isShowFirst()}" class="page-item">
-                    <a class="page-link" th:href="@{/grrreung/shop(page=1)}">&laquo;</a></li>
-                <li th:if="${pagination.isShowPrevious()}" class="page-item">
-                    <a class="page-link" th:href="@{/grrreung/shop(page=${pagination.getPreviousStartPage()})}">&lsaquo;</a></li>
-                <li th:each="page : ${#numbers.sequence(pagination.getStartPage(),pagination.getEndPage())}" class="page-item">
-                    <a class="page-link" th:href="@{/grrreung/shop(page=${page})}" name="page" th:text="${page}"></a>
-                <li th:if="${pagination.isShowNext()}" class="page-item">
-                    <a class="page-link" th:href="@{/grrreung/shop(page=${pagination.getNextStartPage()})}">&rsaquo;</a></li>
-                <li th:if="${pagination.isShowLast()}" class="page-item">
-                    <a class="page-link" th:href="@{/grrreung/shop(page=${pagination.totalPages})}">&raquo;</a></li>
-            </ul>
         </nav>
-<!--                <li><a th:text="Previous" th:if="${pagination.isShowFirst}" href="#">Previous</a></li>-->
-<!--                <li th:each="pagination : ${pagination}">-->
-<!--                    <a th:text="${pagination.startPage}" href="#"></a>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <a th:text="${pagination.totalPages}" href="#"></a>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <a th:text="${pagination.endPage}" href="#"></a>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <a th:text="${pagination.totalPages}" href="#"></a>-->
-<!--                </li>-->
 
-<!--                <li th:if="${pagination.isShowLast()}"><a th:text="Next"  href="#">Next</a></li>-->
-            </ul>
+        <!-- ****** 반복문으로 상품 리스트 보여주기 ******************************************************************************************************************* -->
+
+        <div th:each="item : ${item}" class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+
+            <a th:href="@{/grrreung/shop/item/{itemId}(itemId = ${item.itemId})}" >
+                <img class="hover:grow hover:shadow-lg" th:src="@{'/grrreung/thumbnail/'+ ${item.itemId}}">
+                <div class="pt-3 flex items-center justify-between">
+                    <p th:text="${item.itemName}">상품명</p>
+                    <svg class="h-6 w-6 fill-current text-gray-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12,4.595c-1.104-1.006-2.512-1.558-3.996-1.558c-1.578,0-3.072,0.623-4.213,1.758c-2.353,2.363-2.352,6.059,0.002,8.412 l7.332,7.332c0.17,0.299,0.498,0.492,0.875,0.492c0.322,0,0.609-0.163,0.792-0.409l7.415-7.415 c2.354-2.354,2.354-6.049-0.002-8.416c-1.137-1.131-2.631-1.754-4.209-1.754C14.513,3.037,13.104,3.589,12,4.595z M18.791,6.205 c1.563,1.571,1.564,4.025,0.002,5.588L12,18.586l-6.793-6.793C3.645,10.23,3.646,7.776,5.205,6.209 c0.76-0.756,1.754-1.172,2.799-1.172s2.035,0.416,2.789,1.17l0.5,0.5c0.391,0.391,1.023,0.391,1.414,0l0.5-0.5 C14.719,4.698,17.281,4.702,18.791,6.205z" />
+                    </svg>
+                </div>
+                <p th:text="|${#numbers.formatInteger(item.itemPrice, 0, 'COMMA')}원|" class="pt-1 text-gray-900">상품가격</p>
+            </a>
+
         </div>
 
 
+    </div>
 
-    </section>
+    <th:block th:if="${#lists.isEmpty(item)}">
+        <p style="text-align: center; padding: 30px 0; box-sizing: border-box; font-size: large;">검색결과가 없습니다</p>
+    </th:block>
+
+    <!-- 페이지 번호 출력할곳 **************************************************** -->
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination" >
+            <li th:if="${pagination.isShowFirst()}" class="page-item">
+                <a class="page-link" th:href="@{/grrreung/shop(page=1)}">&laquo;</a></li>
+            <li th:if="${pagination.isShowPrevious()}" class="page-item">
+                <a class="page-link" th:href="@{/grrreung/shop(page=${pagination.getPreviousStartPage()})}">&lsaquo;</a></li>
+            <li th:each="page : ${#numbers.sequence(pagination.getStartPage(),pagination.getEndPage())}" class="page-item">
+                <a class="page-link" th:href="@{/grrreung/shop(page=${page})}" name="page" th:text="${page}"></a>
+            <li th:if="${pagination.isShowNext()}" class="page-item">
+                <a class="page-link" th:href="@{/grrreung/shop(page=${pagination.getNextStartPage()})}">&rsaquo;</a></li>
+            <li th:if="${pagination.isShowLast()}" class="page-item">
+                <a class="page-link" th:href="@{/grrreung/shop(page=${pagination.totalPages})}">&raquo;</a></li>
+        </ul>
+    </nav>
+    <!--                <li><a th:text="Previous" th:if="${pagination.isShowFirst}" href="#">Previous</a></li>-->
+    <!--                <li th:each="pagination : ${pagination}">-->
+    <!--                    <a th:text="${pagination.startPage}" href="#"></a>-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <a th:text="${pagination.totalPages}" href="#"></a>-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <a th:text="${pagination.endPage}" href="#"></a>-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <a th:text="${pagination.totalPages}" href="#"></a>-->
+    <!--                </li>-->
+
+    <!--                <li th:if="${pagination.isShowLast()}"><a th:text="Next"  href="#">Next</a></li>-->
+    </ul>
+    </div>
+
+
+
+</section>
 
 
 <!-- 푸터 -->
 <th:block th:replace="~{/fragments/fragment_footer :: footerFragment}" />
 
 
-    <script src="/js/shop.js"></script>
+<script src="/js/shop.js"></script>
 
 </body>
 </html>

@@ -23,114 +23,19 @@
     <h1 th:text="${itemRev.revTitle}"></h1>
     <p th:text="${itemRev.memberId}"></p>
     <p th:text="${itemRev.revDate}"></p>
-    <p>조회수: ${board.hitCount}</p>
+<!--    <p style="display: none" name="revCode" th:value="${itemRev.revCode}"></p>-->
     <p th:text="${itemRev.revCont}"></p>
 
     <!-- 수정 버튼 -->
-    <a methods="get" href="/board/update/${board.bno}" class="btn">수정</a>
+    <a th:if="${itemRev.memberId == session.loginMember.memberId}" th:href="@{/grrreung/itemrev/update/{revCode}(revCode=${itemRev.revCode})}" class="btn">수정</a>
+
 
     <!-- 삭제 버튼 -->
-    <a href="/board/delete/${board.bno}" onclick="return confirm('정말 삭제 하시겠습니까?')" class="btn">삭제</a>
+    <a th:if="${itemRev.memberId == session.loginMember.memberId}"  th:href="@{/grrreung/itemrev/delete/{revCode}(revCode=${itemRev.revCode})}" onclick="return confirm('정말 삭제 하시겠습니까?')" class="btn">삭제</a>
 
     <!-- 목록으로 돌아가기 버튼 -->
     <a th:href="@{/grrreung/itemrev}" class="btn">목록으로</a>
 </div>
-
-
-<!--<section class="bg-white py-8 notice">-->
-<!--    <div class="container mx-auto items-centerpt-4 pb-12">-->
-<!--        <form class="qna" method="post">-->
-<!--            <div>-->
-<!--                <ul>-->
-<!--                    <li><a href="#">상품후기작성</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--            <table>-->
-<!--                <colgroup>-->
-<!--                    <col style="width:25%">-->
-<!--                </colgroup>-->
-<!--                <tbody>-->
-<!--                <tr>-->
-<!--                    <th>-->
-<!--                        <label>문의유형</label>-->
-<!--                    </th>-->
-
-<!--                    <td>-->
-<!--                        <select>-->
-<!--                            <option value="" disabled selected>카테고리</option>-->
-<!--                            <option value="1">LIVING</option>-->
-<!--                            <option value="2">WALKING</option>-->
-<!--                            <option value="3">FOOD</option>-->
-<!--                        </select>-->
-<!--                        <select disabled="disabled">-->
-<!--                            <option value="" disabled selected>상품선택</option>-->
-<!--                            <option value="1">item1</option>-->
-<!--                            <option value="2">item2</option>-->
-<!--                            <option value="3">item3</option>-->
-<!--                        </select>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th>-->
-<!--                        <label>제목</label>-->
-<!--                    </th>-->
-<!--                    <td>-->
-<!--                        <input name="revTitle" placeholder="제목을 입력하세요" style="width:98%;height:40px;">-->
-<!--                    </td>-->
-<!--                </tr>-->
-
-<!--                <tr>-->
-
-<!--                    <th>내용</th>-->
-<!--                    <td>-->
-<!--                        <textarea id="InputTextarea" name="revCont" cols="5" rows="1"-->
-<!--                                  placeholder="공지사항 내용을 입력해주세요.(2000자 이내)" style="width:98%;height:280px;"></textarea>-->
-<!--                    </td>-->
-<!--                    <td>-->
-<!--                        <div class="filebox">-->
-<!--                            <input class="upload-name" value="첨부파일" placeholder="첨부파일">-->
-<!--                            <label for="file">파일찾기</label>-->
-<!--                            <input type="file" id="file">-->
-<!--                            &lt;!&ndash;&lt;!&ndash;                            <label><button>첨부파일</button></label>&ndash;&gt;&ndash;&gt;-->
-<!--                            &lt;!&ndash;                            <label for="file">&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                <input class="filebox" value="첨부파일" placeholder="첨부파일">&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                <input id="file" type="file" accept=".jpg, .png, .gif">&ndash;&gt;-->
-<!--                            &lt;!&ndash;&lt;!&ndash;                                <p>첨부파일</p>&ndash;&gt;&ndash;&gt;-->
-<!--                            &lt;!&ndash;                            </label>&ndash;&gt;-->
-<!--                            <p>※ 5MB 이하의 이미지 파일 (JPG, PNG, GIF) 1개를 첨부하실 수 있습니다.</p>-->
-<!--                        </div>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th>답변등록알림(선택)</th>-->
-<!--                    <td>-->
-<!--                        <ul>-->
-<!--                            <li><input type="checkbox" value="y">-->
-<!--                                <label>sms</label>-->
-<!--                                <select>-->
-<!--                                    <option>010</option>-->
-<!--                                    <option>02</option>-->
-<!--                                    <option>031</option>-->
-<!--                                    <option>0502</option>-->
-<!--                                </select><span>-</span>-->
-<!--                                <input type="tel"><span>-</span><input type="tel">-->
-<!--                            </li>-->
-<!--                            <li><input type="checkbox"><label>E-mail</label> <input type="email"><span>@</span><input-->
-<!--                                    type="email"></li>-->
-<!--                        </ul>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--            <div class="btn_wrap">-->
-<!--                <button type="submit">등록</button>-->
-<!--                <button href="#">취소</button>-->
-<!--            </div>-->
-<!--        </form>-->
-<!--    </div>-->
-
-
-<!--</section>-->
 
 <!-- 푸터 -->
 <th:block th:replace="~{/fragments/fragment_footer :: footerFragment}"/>
