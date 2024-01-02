@@ -40,8 +40,9 @@
 
 
     <!-- 상품 답변 -->
-    <div th:unless="${#lists.isEmpty(qnaReList)}" class="re-div" th:value="${itemQna.qnaCode}">
-        <th:block th:each="qnaRe : ${qnaReList}">
+<!--    리스트가 비어있지않(있)거나, (로그인맴버가 비어있지않고 그맴버의 admin이 y)일 때는 나타나게-->
+    <div th:if="${not #lists.isEmpty(qnaReList)} or ${session.loginMember != null and session.loginMember.admin == 'Y'}" class="re-div" th:value="${itemQna.qnaCode}">
+        <th:block  th:each="qnaRe : ${qnaReList}">
             <div class="qna-re-style" th:value="${qnaRe.reCode}">
                 <p class="re-cont" th:text="${qnaRe.reCont}"></p>
                 <p class="re-date" th:text="${qnaRe.reDate}"></p>
@@ -53,17 +54,15 @@
             </div>
         </th:block>
         <th:block th:if="${session.loginMember != null and session.loginMember.admin == 'Y'}">
-            <textarea th:if="${session.loginMember.admin} == 'Y'" type="text" name="reCont" class="re-ip"></textarea>
-            <button th:if="${session.loginMember.admin} == 'Y'" name="reCreateBtn" onclick="sendQnaRe()">답변등록</button>
+            <textarea  type="text" name="reCont" placeholder="여기에 답변 내용을 입력하세요" class="re-ip"></textarea>
+            <button  name="reCreateBtn" onclick="sendQnaRe()">답변등록</button>
         </th:block>
     </div>
-
 </div>
 
 <!-- 푸터 -->
 <th:block th:replace="~{/fragments/fragment_footer :: footerFragment}"/>
 <!-- js -->
-<!--<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>-->
 <script src="/js/qna-re.js"></script>
 </body>
 </html>

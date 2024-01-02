@@ -58,14 +58,13 @@
                               <img class="hover:grow hover:shadow-lg" th:src="@{'/grrreung/thumbnail/'+ ${itemRev.item.itemId}}" width="50px" height="50px">
                               <p class="name" th:text="${itemRev.item.itemName}"></p>
                           </a>
-
                           <td><a th:text="${itemRev.revTitle}" th:href="@{/grrreung/itemrev/{revCode}(revCode=${itemRev.revCode})}"></a></td>
                           <td th:text="${itemRev.memberId}"></td>
                           <td th:text="${itemRev.revDate}"></td>
                       </tr>
                   </tbody>
                 </table>
-            <p th:if="${list}=='[]'" style="text-align: center; padding-top: 10px; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>
+            <p th:if="${#lists.isEmpty(list)}" style="text-align: center; padding-top: 10px; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>
             <nav aria-label="Page navigation example">
                 <ul class="pagination" style="" >
                     <li th:if="${pagination.isShowFirst()}" class="page-item">

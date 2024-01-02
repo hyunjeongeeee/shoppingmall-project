@@ -87,6 +87,20 @@
         WHERE qna_code = #{qnaCode}
     </select>
 
+    <!-- 게시글 수정 -->
+    <update id="updateByBno" parameterType="ItemQna">
+        UPDATE item_qna
+        SET qna_title = #{qnaTitle},
+            qna_cont = #{qnaCont}
+        WHERE qna_code = #{qnaCode}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deletePost" parameterType="int">
+        DELETE FROM item_qna
+        WHERE qna_code = #{qnaCode}
+    </delete>
+
     <!-- qnaCode로 답변 가져오기 -->
     <select id="qnaReByQnaCode" parameterType="int" resultType="ItemQnaRe">
         SELECT

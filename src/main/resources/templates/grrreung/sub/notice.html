@@ -62,9 +62,7 @@
 
               </tbody>
           </table>
-<!--         <p th:if="${#lists.isEmpty(list)}" style="text-align: center; padding-top: 10px; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>-->
-          <p th:if="${list}=='[]'" style="text-align: center; padding-top: 10px; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>
-
+          <p th:if="${#lists.isEmpty(list)}" style="text-align: center; padding-top: 10px; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>
           <nav aria-label="Page navigation example">
               <ul class="pagination">
                   <li th:if="${pagination.isShowFirst()}" class="page-item">
