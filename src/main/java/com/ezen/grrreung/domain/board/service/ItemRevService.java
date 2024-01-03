@@ -1,12 +1,7 @@
 package com.ezen.grrreung.domain.board.service;
 
 import com.ezen.grrreung.domain.board.dto.ItemRev;
-import com.ezen.grrreung.domain.board.mapper.ItemRevMapper;
 import com.ezen.grrreung.web.common.RequestParams;
-import com.ezen.grrreung.web.common.page.CommonParams;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;

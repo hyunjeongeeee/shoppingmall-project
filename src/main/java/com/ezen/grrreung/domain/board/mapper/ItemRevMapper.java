@@ -1,9 +1,7 @@
 package com.ezen.grrreung.domain.board.mapper;
 
-import com.ezen.grrreung.domain.board.dto.ItemQna;
 import com.ezen.grrreung.domain.board.dto.ItemRev;
 import com.ezen.grrreung.web.common.RequestParams;
-import com.ezen.grrreung.web.common.page.CommonParams;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
