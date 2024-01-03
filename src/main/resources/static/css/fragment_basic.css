@@ -1,14 +1,14 @@
 @charset "utf-8";
 
 #header {
-    /*position: fixed;*/
+    position: fixed;
     z-index: 9999;
     background-color: #fff;
-    box-shadow: 1px 1px 20px 7px  rgba(0,0,0,.2);
+    /*box-shadow: 1px 1px 20px 7px  rgba(0,0,0,.2);*/
 }
 
-.firstPosition {
-    padding-top: 180px;
+.header-style{
+    padding-top: 80px;
 }
 h2 {
     font-size: 32px;

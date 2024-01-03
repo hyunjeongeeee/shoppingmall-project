@@ -1,14 +1,14 @@
 @charset "utf-8";
 
 #header {
-    /*position: fixed;*/
+    position: fixed;
     z-index: 9999;
     background-color: #fff;
-    box-shadow: 1px 1px 20px 7px  rgba(0,0,0,.2);
+    /*box-shadow: 1px 1px 20px 7px  rgba(0,0,0,.2);*/
 }
 
-.firstPosition {
-    padding-top: 180px;
+.header-style{
+    padding-top: 80px;
 }
 h2 {
     font-size: 32px;
@@ -129,7 +129,6 @@ h2 {
     font-size: 10px;
 }
 
-.pt-4 {padding-top: 0!important;}
 /* 검색창 */
 .sb-search {
     position: relative;
@@ -232,3 +231,5 @@ input[type="search"].sb-search-input {
     color: #333;
     z-index: 11;
 }
+
+.pt-4 {padding-top: 0!important;}

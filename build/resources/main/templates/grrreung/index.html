@@ -10,7 +10,7 @@
 <!-- 헤더 -->
 <th:block th:replace="~{/fragments/fragment_header :: headerFragment}" />
 
-<div class="carousel relative container mx-auto" style="max-width:100%;">
+<div class="carousel relative container mx-auto header-style" style="max-width:100%;">
     <div class="carousel-inner relative overflow-hidden w-full">
         <!--Slide 1-->
         <input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="true" hidden="" checked="checked">
@@ -21,7 +21,7 @@
                 <div class="container mx-auto">
                     <div class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide">
                         <p class="text-black text-2xl my-4">welcome to Grr-reung Mall</p>
-                        <a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black" href="/grrreung/shop">shopping now!</a>
+                        <a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black" th:href="@{/grrreung/shop}">shopping now!</a>
                     </div>
                 </div>
 
@@ -39,7 +39,7 @@
                 <div class="container mx-auto">
                     <div class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide">
                         <p class="text-black text-2xl my-4">welcome to Grr-reung Mall</p>
-                        <a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black" href="/grrreung/shop">shopping now!</a>
+                        <a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black" th:href="@{/grrreung/shop}">shopping now!</a>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                 <div class="container mx-auto">
                     <div class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide">
                         <p class="text-black text-2xl my-4">welcome to Grr-reung Mall</p>
-                        <a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black" href="/grrreung/shop">shopping now!</a>
+                        <a class="text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black" th:href="@{/grrreung/shop}">shopping now!</a>
                     </div>
                 </div>
 
@@ -93,8 +93,8 @@
                 </a>
 <!--                 검색창 -->
                 <div id="sb-search" class="sb-search " >
-                    <form action="/grrreung/shop" method="get">
-                        <input class="sb-search-input " onkeyup="buttonUp();" placeholder="Enter your search term..." type="search" value="" name="search" id="search">
+                    <form th:action="@{/grrreung/shop}" method="get">
+                        <input class="sb-search-input " placeholder="Enter your search term..." type="search" value="" name="search" id="search">
                         <input class="sb-search-submit" type="submit"  value="">
                         <span class="sb-icon-search"><i class="fa fa-search"></i></span>
                     </form>

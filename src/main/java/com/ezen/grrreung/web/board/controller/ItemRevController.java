@@ -163,13 +163,9 @@ public class ItemRevController {
 
     // 아이템 상세보기 페이지에 보여줄 리뷰 목록 조회
 
-    @RequestMapping("/all-reviews")
     @ResponseBody
-    public List<ItemRev> findItemReviews(
-            @RequestParam int itemId, Model model
-            , @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-
-
+    @RequestMapping("/all-reviews")
+    public List<ItemRev> findItemReviews(@RequestParam int itemId, Model model) {
         int reviewCount = itemRevService.itemRevPostCount(itemId);
         List<ItemRev> list = itemRevService.itemReviewAll(itemId);
         log.info("reviewCount : {}", reviewCount);

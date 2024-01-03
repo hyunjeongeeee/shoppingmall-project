@@ -21,25 +21,25 @@
     <div class="container mx-auto flex items-center flex-wrap pt-4 pb-12">
         <nav id="store" class="w-full z-30 top-0 px-6 py-1">
             <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
-                <h2>All ITEMS</h2>
+                <h2>ITEMS</h2>
 
                 <div class="flex items-center" id="store-nav-content">
-                    <a class="pl-3 inline-block no-underline hover:text-black" href="#">
-                        <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M7 11H17V13H7zM4 7H20V9H4zM10 15H14V17H10z" />
-                        </svg>
-                    </a>
+<!--                    <a class="pl-3 inline-block no-underline hover:text-black" href="#">-->
+<!--                        <svg class="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">-->
+<!--                            <path d="M7 11H17V13H7zM4 7H20V9H4zM10 15H14V17H10z" />-->
+<!--                        </svg>-->
+<!--                    </a>-->
 
-                    <select name="range" id="range_box">
-                        <option value="1" selected>신상품</option>
-                        <option value="2">상품명</option>
-                        <option value="3">낮은가격</option>
-                        <option value="4">높은가격</option>
-                    </select>
+<!--                    <select name="range" id="range_box">-->
+<!--                        <option value="1" selected>신상품</option>-->
+<!--                        <option value="2">상품명</option>-->
+<!--                        <option value="3">낮은가격</option>-->
+<!--                        <option value="4">높은가격</option>-->
+<!--                    </select>-->
 
                     <!-- 상품 검색 input  -->
                     <form th:action="@{/grrreung/shop(searchValue=${searchValue})}" method="get" >
-                        <input type="text" name="search">
+                        <input type="text" name="search" placeholder="Enter your search term...">
                         <!--                            <a tclass="pl-3 inline-block no-underline hover:text-black" th:href="@{/grrreung/search(searchValue = ${searchValue})}">-->
                         <a class="pl-3 inline-block no-underline hover:text-black"></a>
                         <button type="submit" class="fill-current hover:text-black"  width="24" height="24">

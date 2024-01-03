@@ -273,7 +273,7 @@ $(document).ready(function() {
 // 리뷰 내용 페이지 안에서 보여주기 (페이지 이동하지 않고)
 // 동적으로 생성한 요소 => document.on
 $(document).on("click", ".rev_title", function () {
-    console.log("제목클릭");
+    // console.log("리뷰제목클릭");
     $(this).closest('tr').next().find('.rev_cont').slideToggle(300);
     $(this).closest('tr').next().find('.rev_cont').toggleClass('toggle-hide')
     $(".rev_title").not(this).closest('tr').next().find('.rev_cont').slideUp(300);
