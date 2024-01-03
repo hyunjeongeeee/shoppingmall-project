@@ -3,13 +3,13 @@
 <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
 
 <th:block th:fragment="shopTitleFragment(title)">
-    <section class="bg-white py-8 notice firstPosition">
-        <div class="container mx-auto items-center flex-wrap pt-4 pb-12">
+    <section class="bg-white py-8 notice header-p">
+        <div class="container mx-auto items-center flex-wrap pt-4 pb-12 header-p section-m">
 
             <!-- /* 페이지 내부 서브 타이틀 */ -->
             <th:block th:replace="${title}" />
 
-            <div class="w-full container mx-auto mt-0 px-2 py-3 ">
+            <div class="w-full container mx-auto mt-0 px-2 py-3">
                 <div class="category-button button_wrap flex itmes-center">
                     <a th:href="@{/grrreung/shop}">ALL</a>
                     <a th:href="@{/grrreung/shop(cateTop='living')}">LIVING</a>
