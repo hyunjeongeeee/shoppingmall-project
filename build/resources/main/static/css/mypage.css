@@ -3,6 +3,10 @@ body {
     margin-top: 20px;
 }
 
+.container-p-y {
+    padding-top: 110px;
+}
+
 .ui-w-80 {
     width: 80px !important;
     height: auto;
