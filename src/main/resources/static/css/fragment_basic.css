@@ -231,3 +231,5 @@ input[type="search"].sb-search-input {
     color: #333;
     z-index: 11;
 }
+
+.pt-4 {padding-top: 0!important;}

@@ -28,9 +28,10 @@
                   <label for="search" class="blind">공지사항 내용 검색</label>
                   <input id="search" type="search" name="search" placeholder="제목 또는 날짜로 검색" >
                   <button type="submit" class="btn btn-dark searchBtn">검색</button>
-
+                    <th:block th:unless="${session.loginMember} == null">
                   <a th:if="${session.loginMember.admin} == 'Y'" class="btn btn-dark postBtn" style="right: -130px" href="/grrreung/notice/create">글쓰기</a>
 <!--                  th:if="${session.loginMember.getAdmin} == 'Y'"-->
+                    </th:block>
               </div>
           </form>
       </div>
@@ -61,9 +62,7 @@
 
               </tbody>
           </table>
-<!--         <p th:if="${#lists.isEmpty(list)}" style="text-align: center; padding-top: 10px; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>-->
-          <p th:if="${list}=='[]'" style="text-align: center; padding-top: 10px; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>
-
+          <p th:if="${#lists.isEmpty(list)}" style="text-align: center; padding-top: 10px; box-sizing: border-box; font-size: large">검색결과가 없습니다</p>
           <nav aria-label="Page navigation example">
               <ul class="pagination">
                   <li th:if="${pagination.isShowFirst()}" class="page-item">

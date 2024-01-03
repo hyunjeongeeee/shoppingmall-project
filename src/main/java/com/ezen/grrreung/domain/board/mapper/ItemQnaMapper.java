@@ -29,10 +29,21 @@ public interface ItemQnaMapper {
     public void deletePost(int qnaCode);
 
     // 조회수
-    public void hitCountUpdate(int qnaCode);
+//    public void hitCountUpdate(int qnaCode);
 
+    // qnaCode로 답변리스트 가져오기
+    public List<ItemQnaRe> qnaReByQnaCode(int qnaCode);
+    
     // 문의답변등록
     public void createRe(ItemQnaRe itemQnaRe);
-    // 등록된 답변 객체 가져오기
-    public ItemQnaRe getQnaRe(int qnaCode);
+
+    // reCode로 답변 1개 가져오기
+    public ItemQnaRe getQnaRe(int reCode);
+
+    // 답변 수정하기
+    public void updateQnaRe(ItemQnaRe itemQnaRe);
+
+    // 답변 삭제하기
+    public void deleteQnaRe(int reCode);
+
 }

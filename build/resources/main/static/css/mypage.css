@@ -475,3 +475,8 @@ form {
     font-weight: bold;
     font-size: 1.5rem;
 }
+.setting-comment {
+    font-size: 13px;
+    display: block;
+    padding-left: 20px;
+}

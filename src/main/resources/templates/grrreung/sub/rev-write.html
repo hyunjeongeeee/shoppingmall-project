@@ -40,15 +40,16 @@
 
                     <td>
                         <a th:href="@{/grrreung/shop/item/{itemId}(itemId=${item.itemId})}">
-                            <img class="hover:grow hover:shadow-lg" th:src="@{'/grrreung/thumbnail/'+ ${item.itemId}}" width="80px" height="80px">
+                            <img class="hover:grow hover:shadow-lg" th:src="@{'/grrreung/thumbnail/'+ ${item.itemId}}"
+                                 width="80px" height="80px">
                             <p class="name" th:text="${item.itemName}"></p>
                         </a>
-<!--                        <select class="mainCategory" name="mainCategory" >-->
-<!--                            <option th:text="${category.cateTop}" th:value="${category.cateTop}" readonly ></option>-->
-<!--                        </select>-->
-<!--                        <select class="subCategory" name="cateCode" readonly="">-->
-<!--                            <option th:text="${category.cateName}" th:value="${category.cateName}" readonly ></option>-->
-<!--                        </select>-->
+                        <!--                        <select class="mainCategory" name="mainCategory" >-->
+                        <!--                            <option th:text="${category.cateTop}" th:value="${category.cateTop}" readonly ></option>-->
+                        <!--                        </select>-->
+                        <!--                        <select class="subCategory" name="cateCode" readonly="">-->
+                        <!--                            <option th:text="${category.cateName}" th:value="${category.cateName}" readonly ></option>-->
+                        <!--                        </select>-->
                     </td>
                 </tr>
                 <tr>
@@ -72,12 +73,14 @@
                             <input class="upload-name" value="첨부파일" placeholder="첨부파일">
                             <label for="file">파일찾기</label>
                             <input type="file" id="file">
-                            <!--&lt;!&ndash;                            <label><button>첨부파일</button></label>&ndash;&gt;-->
-                            <!--                            <label for="file">-->
-                            <!--                                <input class="filebox" value="첨부파일" placeholder="첨부파일">-->
-                            <!--                                <input id="file" type="file" accept=".jpg, .png, .gif">-->
-                            <!--&lt;!&ndash;                                <p>첨부파일</p>&ndash;&gt;-->
-                            <!--                            </label>-->
+<!--                            <label>-->
+<!--                                <button>첨부파일</button>-->
+<!--                            </label>-->
+<!--                            <label for="file">-->
+<!--                                <input class="filebox" value="첨부파일" placeholder="첨부파일">-->
+<!--                                <input id="file" type="file" accept=".jpg, .png, .gif">-->
+<!--                                <p>첨부파일</p>-->
+<!--                            </label>-->
                             <p>※ 5MB 이하의 이미지 파일 (JPG, PNG, GIF) 1개를 첨부하실 수 있습니다.</p>
                         </div>
                     </td>
@@ -86,7 +89,7 @@
             </table>
             <div class="btn_wrap">
                 <button type="submit">등록</button>
-                <button th:href="@{/grrreung/itemrev}">취소</button>
+                <button type="button" onclick="window.location.href='/grrreung/itemrev'">취소</button>
             </div>
         </form>
     </div>

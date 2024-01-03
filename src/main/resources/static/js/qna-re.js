@@ -2,15 +2,15 @@
 const reContBox = $('textarea[name="reCont"]');
 const reBox = $('.re-div');
 const reCreateBtn = $('button[name="reCreateBtn"]');
+const exNewReBox = $('.qna-re-style:last');
 
 async function sendQnaRe() {
-
     const reCont = reContBox.val();
     const qnaCode = reBox.attr('value');
 
     try {
         const response = await $.ajax({
-            url: "/grrreung/itemqna/qna-re",
+            url: "/grrreung/itemqna/re-create",
             method: "GET",
             data: {
                 reCont: reCont,
@@ -18,66 +18,106 @@ async function sendQnaRe() {
             }
         });
 
-        // 등록버튼 수정으로 변경
-        reCreateBtn.text('수정');
-        reCreateBtn.attr('onclick', 'changeReadOnly()');
-
-        // 삭제버튼 생성
-        const updateBtn = document.createElement('button');
-        updateBtn.textContent = '삭제';
-
-
-
-        // 리드온리로 변경
-        reBox.append(updateBtn);
-        // reContBox.textContent = data.reCont;
-        reContBox.val(`${response.reCont}\n${response.reDate}`);
-        reContBox.prop('readonly',true);
-        reContBox.addClass('qna-re-style');
-        // getReCont(response);
-
-
-
-
-
-        // 받은 데이터를 사용하여 업데이트할 요소 생성
-        // const pTag = document.createElement('p');
-        // pTag.textContent = response.reCont // 예시: 서버에서 'Success'를 전달하면 'Success'가 출력되도록 변경
-        //
-        // // 기존 요소에 추가
-        // reBox.append(pTag);
-
-        // 원하는 추가적인 처리 작업 수행 가능
+        handleNewResponse(response, false);
+        reContBox.val('');
 
     } catch (error) {
         console.error("실패", error);
     }
 }
 
-function getReCont(data){
+// 동적 태그 생성
+function handleNewResponse(response, isUpdate) {
+    const newReBox = $('<div class="qna-re-style" value="' + response.reCode + '"></div>');
+    const updateBtn = $('<button name="reUpdateBtn">수정</button>').click(updateQnaRe);
+    const deleteBtn = $('<button>삭제</button>').click(deleteQnaRe);
 
+    newReBox.append('<p class="re-cont">' + response.reCont + '</p>');
+    newReBox.append('<p class="re-date" >' + response.reDate + '</p>');
+    newReBox.append(updateBtn);
+    newReBox.append(deleteBtn);
+    newReBox.append('<hr>');
+    newReBox.addClass('qna-re-style');
+
+    // 수정인 경우
+    if (isUpdate) {
+
+        return newReBox;
+    } else {
+        console.log(exNewReBox.length)
+        if (exNewReBox.length > 0) {
+            exNewReBox.before(newReBox);
+        } else {
+            reContBox.before(newReBox);
+        }
+    }
+}
+
+// 삭제버튼 클릭시
+async function deleteQnaRe() {
+    const thisBtn = $(event.currentTarget);
+    const reCode = thisBtn.parent().attr('value');
+    const qnaCode = reBox.attr('value');
+
+    try {
+        const response = await $.ajax({
+            url: "/grrreung/itemqna/re-delete",
+            method: "GET",
+            data: {
+                qnaCode: qnaCode,
+                reCode: reCode
+            }
+        });
+
+        thisBtn.parent().remove();
+        exNewReBox.length=exNewReBox.length-1;
+
+    } catch (error) {
+        console.error("실패", error);
+    }
 
 }
 
-function changeReadOnly(){
-    reContBox.prop('readonly',false);
-    reContBox.removeClass('qna-re-style');
-    reCreateBtn.attr('onclick', 'updateQnaRe()');
+// 수정 버튼 클릭시
+function updateQnaRe() {
+    const thisBtn = $(event.currentTarget);
+    const pTag = thisBtn.parent().find('.re-cont');
+    const pText = pTag.text();
+
+    thisBtn.attr('onclick', 'submitUpdate()').text('수정완료');
+
+    const newTextArea = $('<textarea></textarea>').attr({
+        'name': 'reCont',
+        'class': 're-ip',
+        'type': 'text'
+    }).val(pText);
+
+    pTag.replaceWith(newTextArea);
 }
 
-function updateQnaRe(){
-    // try {
-    //     const response = await $.ajax({
-    //         url: "/grrreung/itemqna/qna-re",
-    //         method: "GET",
-    //         data: {
-    //             reCont: reCont,
-    //             qnaCode: qnaCode
-    //         }
-    //     });
-    //
-    //
-    // } catch (error) {
-    //     console.error("실패", error);
-    // }
+// 수정 완료 버튼 클릭 시
+async function submitUpdate() {
+    const thisBtn = $(event.currentTarget);
+    const reCode = thisBtn.parent().attr('value');
+    const reContBox = thisBtn.closest('.qna-re-style').find('textarea');
+    const reCont = reContBox.val();
+    const qnaCode = reBox.attr('value');
+
+    try {
+        const response = await $.ajax({
+            url: "/grrreung/itemqna/re-update",
+            method: "GET",
+            data: {
+                reCode: reCode,
+                reCont: reCont,
+                qnaCode: qnaCode
+            }
+        });
+
+        let newBox = handleNewResponse(response, true);
+        // thisBtn.parent().remove();
+        thisBtn.parent().replaceWith(newBox);
+    } catch (error) {
+        console.error("실패", error);
+    }
 }

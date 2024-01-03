@@ -86,6 +86,30 @@
         FROM item_qna
         WHERE qna_code = #{qnaCode}
     </select>
+    <!-- 게시글 수정 -->
+    <update id="updateByBno" parameterType="ItemQna">
+        UPDATE item_qna
+        SET qna_title = #{qnaTitle},
+            qna_cont = #{qnaCont}
+        WHERE qna_code = #{qnaCode}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deletePost" parameterType="int">
+        DELETE FROM item_qna
+        WHERE qna_code = #{qnaCode}
+    </delete>
+
+    <!-- qnaCode로 답변 가져오기 -->
+    <select id="qnaReByQnaCode" parameterType="int" resultType="ItemQnaRe">
+        SELECT
+            *
+        FROM
+            item_qna_re
+        WHERE
+            qna_code = #{qnaCode}
+        ORDER BY re_code ASC
+    </select>
 
     <!-- 문의 답변 등록 -->
     <insert id="createRe" parameterType="ItemQnaRe" >
@@ -108,7 +132,20 @@
             *
         FROM
             item_qna_re
-        where re_code = #{reCode}
+        WHERE re_code = #{reCode}
     </select>
+    <!-- 답변 수정하기 -->
+    <update id="updateQnaRe" parameterType="ItemQnaRe" >
+        UPDATE item_qna_re
+        SET
+            re_cont = #{reCont},
+            re_date = SYSDATE
+        WHERE re_code = #{reCode}
+    </update>
+    <!-- 답변 삭제하기 -->
+    <delete id="deleteQnaRe" parameterType="int">
+        DELETE FROM item_qna_re
+        WHERE re_code = #{reCode}
+    </delete>
 </mapper>
 

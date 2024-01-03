@@ -26,12 +26,12 @@
 <!--    <p style="display: none" name="revCode" th:value="${itemRev.revCode}"></p>-->
     <p th:text="${itemRev.revCont}"></p>
 
+    <th:block th:unless="${session.loginMember} == null">
     <!-- 수정 버튼 -->
     <a th:if="${itemRev.memberId == session.loginMember.memberId}" th:href="@{/grrreung/itemrev/update/{revCode}(revCode=${itemRev.revCode})}" class="btn">수정</a>
-
-
     <!-- 삭제 버튼 -->
     <a th:if="${itemRev.memberId == session.loginMember.memberId}"  th:href="@{/grrreung/itemrev/delete/{revCode}(revCode=${itemRev.revCode})}" onclick="return confirm('정말 삭제 하시겠습니까?')" class="btn">삭제</a>
+    </th:block>
 
     <!-- 목록으로 돌아가기 버튼 -->
     <a th:href="@{/grrreung/itemrev}" class="btn">목록으로</a>

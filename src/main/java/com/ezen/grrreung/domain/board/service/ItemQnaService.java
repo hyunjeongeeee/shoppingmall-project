@@ -21,15 +21,24 @@ public interface ItemQnaService {
     // 상품 문의상세보기
     public ItemQna postInfo(int qnaCode);
 
+    // 상품 문의 수정
+    public void updatePost(ItemQna itemQna);
+
     // 상품 문의 삭제
     public void deletePost(int qnaCode);
 
-    // 상품 문의 수정
-    public void updatePost(ItemQna itemQna);
+    // qnaCode로 답변 리스트 가져오기
+    public List<ItemQnaRe> getListByQnaCode(int qnaCode);
 
     // 상품 문의 답변 등록
     public int postRe(ItemQnaRe itemQnaRe);
 
     // 생성된 reCode로 등록된 답변 가져오기
     public ItemQnaRe getReByReCode(int reCode);
+
+    // 답변 수정 하기
+    public void updateQnaRe(ItemQnaRe itemQnaRe);
+
+    // 답변 삭제 하기
+    public  void  deleteQnaRe(int reCode);
 }

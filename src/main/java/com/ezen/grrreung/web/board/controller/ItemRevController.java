@@ -2,8 +2,6 @@ package com.ezen.grrreung.web.board.controller;
 
 import com.ezen.grrreung.domain.board.dto.ItemRev;
 import com.ezen.grrreung.domain.board.service.ItemRevService;
-import com.ezen.grrreung.domain.item.dto.Item;
-import com.ezen.grrreung.domain.cart.dto.Cart;
 import com.ezen.grrreung.domain.item.dto.Category;
 import com.ezen.grrreung.domain.item.dto.Item;
 import com.ezen.grrreung.domain.item.service.ItemService;
@@ -14,28 +12,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequestMapping("/grrreung/itemrev")
 @RequiredArgsConstructor
@@ -59,13 +43,16 @@ public class ItemRevController {
                            Model model) {
         // 세션에서 memberId 가져오기
         Member member = (Member) session.getAttribute("loginMember");
-        String memberId = member.getMemberId();
+        if (member != null) {
 
-        // 나의 후기 클릭시
-        if (request.getRequestURI().endsWith("/myreview")) {
-            // "myreview"로 매핑된 경우 처리
-            search = memberId;
+            String memberId = member.getMemberId();
+            // 나의 후기 클릭시
+            if (request.getRequestURI().endsWith("/myreview")) {
+                // "myreview"로 매핑된 경우 처리
+                search = memberId;
+            }
         }
+
 
         //==========페이징처리==========
         // 페이징 처리와 관련된 변수
@@ -108,7 +95,7 @@ public class ItemRevController {
 
     // 겟매핑 -> 게시글 작성 화면으로 넘어감
     @GetMapping("/create/{itemId}")
-    public String form(@PathVariable int itemId,  Model model) throws IOException {
+    public String form(@PathVariable int itemId, Model model) throws IOException {
 
         // itemId로 카테고리 가져오기
         Category category = itemService.getCateByItemId(itemId);
@@ -146,7 +133,7 @@ public class ItemRevController {
     @GetMapping("/{revCode}")
     public String postInfo(@PathVariable int revCode, Model model) {
         ItemRev itemRevInfo = itemRevService.postInfo(revCode);
-        model.addAttribute("itemRev",itemRevInfo);
+        model.addAttribute("itemRev", itemRevInfo);
         return "/grrreung/sub/rev-cont";
     }
 

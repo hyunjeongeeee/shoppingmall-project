@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RequestMapping("/grrreung/itemqna")
 @RequiredArgsConstructor
 @Controller
@@ -32,7 +33,7 @@ public class ItemQnaController {
     @GetMapping()
     public String postList(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
                            @RequestParam(value = "search", required = false, defaultValue = "") String search,
-                           Model model){
+                           Model model) {
         // 페이징 처리와 관련된 변수
         int elementSize = 5; // 화면에 보여지는 행의 갯수
         int pageSize = 3;     // 화면에 보여지는 페이지 갯수
@@ -52,10 +53,9 @@ public class ItemQnaController {
         List<ItemQna> list = itemQnaService.postList(params);
 
 
-
         model.addAttribute("params", params); // 요청 파라메터
         model.addAttribute("pagination", pagination); // 페이징 계산 결과
-        model.addAttribute("list",list); // db 리스트
+        model.addAttribute("list", list); // db 리스트
 
         return "/grrreung/sub/qna";
     }
@@ -63,7 +63,7 @@ public class ItemQnaController {
 
     // 겟매핑 -> 게시글 작성 화면으로 넘어감
     @GetMapping("/create")
-    public String form(Model model){
+    public String form(Model model) {
 
 
         List<Category> cateList = itemService.categoryAllList();
@@ -73,7 +73,7 @@ public class ItemQnaController {
 
     // 포스트 매핑 -> 게시글 등록에서 submit 버튼 클릭시 작동 -> 리스트화 면으로 넘어감
     @PostMapping("/create")
-    public String posting(@ModelAttribute("itemQna")ItemQna itemQna, HttpSession session){
+    public String posting(@ModelAttribute("itemQna") ItemQna itemQna, HttpSession session) {
         //세션에서 memberId 가져오기
         Member member = (Member) session.getAttribute("loginMember");
         String memberId = member.getMemberId();
@@ -86,9 +86,16 @@ public class ItemQnaController {
 
     // 상세보기 겟매핑
     @GetMapping("/{qnaCode}")
-    public String postInfo(@PathVariable int qnaCode, Model model){
+    public String postInfo(@PathVariable int qnaCode, Model model) {
+        // ItemQna 데이터 가져오기
         ItemQna itemQnaInfo = itemQnaService.postInfo(qnaCode);
-        model.addAttribute("itemQna",itemQnaInfo);
+        model.addAttribute("itemQna", itemQnaInfo);
+
+        // ItemQnaRe 데이터 가져오기
+        List<ItemQnaRe> list = itemQnaService.getListByQnaCode(qnaCode);
+        model.addAttribute("qnaReList", list);
+        log.info("qnaReList : {}", list);
+
         return "/grrreung/sub/qna-cont";
     }
 
@@ -114,12 +121,12 @@ public class ItemQnaController {
         itemQnaService.deletePost(qnaCode);
         return "redirect:/grrreung/itemqna";
     }
-   
 
+    //----------- 문의 답변 --------------------------
 
     // qna 답변 등록하기
-    @GetMapping("/qna-re")
-    public ResponseEntity<ItemQnaRe> qnaCreate(@RequestParam String reCont, @RequestParam int qnaCode){
+    @GetMapping("/re-create")
+    public ResponseEntity<ItemQnaRe> reCreate(@RequestParam String reCont, @RequestParam int qnaCode) {
 
         // 요청파라미터가 적용된 dto 생성
         ItemQnaRe itemQnaRe = new ItemQnaRe();
@@ -131,14 +138,44 @@ public class ItemQnaController {
 
         // 받아온 reCode로 db에 등록된 itemQnaRe 데이터 가져오기
         itemQnaRe = itemQnaService.getReByReCode(reCode);
-        
+
         log.info("Qna 답변 {}", itemQnaRe);
 
         return new ResponseEntity<>(itemQnaRe, HttpStatus.OK);
     }
 
 
+    // qna 답변 수정하기
+    @GetMapping("/re-update")
+    public ResponseEntity<ItemQnaRe> reUpdate(@RequestParam String reCont, @RequestParam int reCode, @RequestParam int qnaCode) {
+        // 요청파라미터가 적용된 dto 생성
+        ItemQnaRe itemQnaRe = new ItemQnaRe();
+        itemQnaRe.setQnaCode(qnaCode);
+        itemQnaRe.setReCont(reCont);
+        itemQnaRe.setReCode(reCode);
+
+        log.info("수정된내용1 {}", itemQnaRe);
+        // db 내용 수정
+        itemQnaService.updateQnaRe(itemQnaRe);
 
 
+        // 수정된 itemQnRe 가져오기
+        itemQnaRe = itemQnaService.getReByReCode(reCode);
 
+        log.info("수정된내용2 {}", itemQnaRe);
+
+        return new ResponseEntity<>(itemQnaRe, HttpStatus.OK);
+    }
+
+    // qna 답변 삭제하기
+//    @GetMapping("/re-delete")
+//    public ResponseEntity<ItemQnaRe> reDelete(@RequestParam int reCode) {
+//        itemQnaService.deleteQnaRe(reCode);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+    @GetMapping("/re-delete")
+    public ResponseEntity<ItemQnaRe> reDelete(@RequestParam int reCode, @RequestParam int qnaCode) {
+        itemQnaService.deleteQnaRe(reCode);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

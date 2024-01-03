@@ -25,10 +25,12 @@
     <p th:text="${notice.notiDate}"></p>
     <p th:text="${notice.notiCont}"></p>
 
+    <th:block th:if="${session.loginMember != null and session.loginMember.admin == 'Y'}">
     <!-- 수정 버튼 -->
-    <a th:if="${session.loginMember.admin} == 'Y'" th:href="@{/grrreung/notice/update/{notiCode}(notiCode=${notice.notiCode})}" class="btn">수정</a>
+    <a th:href="@{/grrreung/notice/update/{notiCode}(notiCode=${notice.notiCode})}" class="btn">수정</a>
     <!-- 삭제 버튼 -->
-    <a th:if="${session.loginMember.admin} == 'Y'"  th:href="@{/grrreung/notice/delete/{notiCode}(notiCode=${notice.notiCode})}" onclick="return confirm('정말 삭제 하시겠습니까?')" class="btn">삭제</a>
+    <a   th:href="@{/grrreung/notice/delete/{notiCode}(notiCode=${notice.notiCode})}" onclick="return confirm('정말 삭제 하시겠습니까?')" class="btn">삭제</a>
+    </th:block>
 
     <!-- 목록으로 돌아가기 버튼 -->
     <a th:href="@{/grrreung/notice}" class="btn">목록으로</a>

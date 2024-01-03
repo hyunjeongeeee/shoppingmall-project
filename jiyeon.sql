@@ -20,13 +20,25 @@ WHERE
 ORDER BY
     item_id DESC;
 
+
+DELETE FROM item_qna_re;
+
 SELECT
     *
 FROM
-    item_qna_re;
+    item_qna_re
+    WHERE  qna_code = 23
+    ORDER BY re_code asc;
+
     
-delete from item_qna_re where re_code =4;
 commit;
+
+UPDATE item_qna_re 
+SET
+    re_cont = '1114561' , 
+    re_date = SYSDATE 
+WHERE RE_CODE = 74;
+
 
 SELECT
     *

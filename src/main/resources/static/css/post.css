@@ -327,7 +327,7 @@ button:hover {
 .btn_wrap {
   display: flex;
   justify-content: space-between;
-  padding: 50px 290px;
+  padding: 30px 290px;
 }
 .btn_wrap>button {
   display: block;
